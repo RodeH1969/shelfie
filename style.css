@@ -1,0 +1,1169 @@
+/* =============================================
+   TROLLEY — Design System
+   Palette: deep grocery-aisle green + warm cream
+   ============================================= */
+
+:root {
+  --green-900: #0d2419;
+  --green-800: #1a3a2a;
+  --green-700: #224d37;
+  --green-600: #2d6647;
+  --green-500: #3a7d57;
+  --green-400: #4a9a6c;
+  --green-300: #6dba8e;
+  --green-100: #d4edd9;
+  --green-50:  #edf7ef;
+
+  --red-500:  #d63b3b;
+  --red-100:  #fde8e8;
+  --blue-500: #2563eb;
+  --blue-100: #dbeafe;
+
+  --amber-500: #d97706;
+  --amber-100: #fef3c7;
+  --amber-50:  #fffbeb;
+
+  --cream:    #faf8f3;
+  --surface:  #ffffff;
+  --border:   #e2e8e4;
+  --text:     #111c15;
+  --text-muted: #5a7264;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,.14);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  --font-display: 'Archivo Black', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  --transition: 160ms ease;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --bg:           var(--cream);
+  --card-bg:      var(--surface);
+  --card-border:  var(--border);
+}
+
+[data-theme='dark'] {
+  --bg:          #0a1a10;
+  --card-bg:     #142019;
+  --card-border: #2a3d2f;
+  --text:        #e8f0ea;
+  --text-muted:  #7a9e85;
+  --border:      #2a3d2f;
+  --surface:     #1a2e1f;
+  --shadow-sm:   0 1px 4px rgba(0,0,0,.3);
+  --shadow-md:   0 4px 16px rgba(0,0,0,.35);
+  --shadow-lg:   0 8px 32px rgba(0,0,0,.45);
+}
+
+*, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+html, body {
+  height:100%;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+/* ---- Screens ---- */
+.screen {
+  display: none;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.screen.active { display:flex; }
+
+/* ---- Top bar ---- */
+.top-bar {
+  display: flex;
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  gap: var(--space-3);
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.top-bar-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  flex: 1;
+}
+.icon-btn {
+  background: none; border: none; cursor: pointer;
+  font-size: 18px; padding: var(--space-2); border-radius: var(--radius-sm);
+  line-height:1;
+}
+.theme-toggle { margin-left:auto; }
+
+/* ---- Progress bar ---- */
+.progress-bar {
+  height: 4px;
+  background: var(--card-border);
+  position: relative;
+}
+.progress-fill {
+  height: 100%;
+  background: var(--green-400);
+  transition: width 400ms ease;
+  width: 0%;
+}
+
+/* ---- Buttons ---- */
+.btn-primary {
+  display: block;
+  width: 100%;
+  padding: 18px var(--space-6);
+  background: var(--green-700);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 17px;
+  letter-spacing: 0.03em;
+  border: none;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition), opacity var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary:hover { background: var(--green-600); }
+.btn-primary:active { transform: scale(0.97); }
+.btn-primary:disabled {
+  background: var(--border);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  transform: none;
+}
+[data-theme='dark'] .btn-primary:disabled { background: var(--card-border); }
+
+/* ==========================================
+   INTRO SCREEN
+   ========================================== */
+/* ---- Intro game logo ---- */
+.intro-game-logo {
+  width: min(260px, 70vw);
+  height: auto;
+  object-fit: contain;
+  /* logo has black bg — soften with radius + subtle ring */
+  border-radius: var(--radius-lg);
+  outline: 3px solid var(--card-border);
+}
+
+/* ---- Intro store logos row ---- */
+.intro-store-logos {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  align-items: center;
+}
+.intro-store-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.intro-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-6) var(--space-8);
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.intro-top-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  justify-content: center;
+}
+
+.puzzle-num {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.date-pill {
+  display: inline-block;
+  padding: 6px 16px;
+  background: var(--green-100);
+  color: var(--green-700);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+[data-theme='dark'] .date-pill { background: var(--green-800); color: var(--green-300); }
+
+.intro-headline {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 8vw, 40px);
+  line-height: 1.15;
+  color: var(--text);
+}
+.intro-headline em {
+  font-style: normal;
+  color: var(--green-500);
+}
+[data-theme='dark'] .intro-headline em { color: var(--green-300); }
+
+.intro-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 300px;
+}
+
+.intro-stores {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.store-chip {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+}
+.store-chip.aldi       { background: #0d4c99; color:#fff; }
+.store-chip.coles      { background: #d32f2f; color:#fff; }
+.store-chip.woolworths { background: #1b5e20; color:#fff; }
+
+.streak-row {
+  font-size: 15px;
+  color: var(--text-muted);
+  font-weight: 500;
+  min-height: 22px;
+}
+
+.intro-disclaimer {
+  font-size: 11px;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+/* ==========================================
+   PICKS SCREEN
+   ========================================== */
+.picks-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  overflow-y: auto;
+}
+
+/* Product card */
+.product-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.product-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  border-bottom: 1px solid var(--card-border);
+}
+.product-emoji { font-size: 28px; line-height:1; }
+.product-name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  color: var(--text);
+}
+.product-unit {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* ---- Ranking instruction bar ---- */
+.rank-instruction {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+  border-bottom: 1px solid var(--card-border);
+  background: var(--bg);
+}
+.rank-arrow { font-size: 16px; color: var(--green-400); }
+
+/* ---- Rank list + rows ---- */
+.store-rank-list {
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+}
+
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-3) var(--space-4) var(--space-4);
+  border-bottom: 1px solid var(--card-border);
+  background: var(--card-bg);
+  touch-action: none;
+  transition: background var(--transition), box-shadow var(--transition);
+}
+.rank-row:last-child { border-bottom: none; }
+
+.rank-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--green-100);
+  color: var(--green-700);
+  font-family: var(--font-display);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: 900;
+}
+[data-theme='dark'] .rank-badge { background: var(--green-800); color: var(--green-300); }
+.rank-badge.rank-1 { background: #fef3c7; color: #92400e; } /* gold   */
+.rank-badge.rank-2 { background: #f1f5f9; color: #475569; } /* silver */
+.rank-badge.rank-3 { background: #fef2f2; color: #991b1b; } /* bronze */
+
+.rank-handle {
+  margin-left: auto;
+  font-size: 20px;
+  color: var(--text-muted);
+  cursor: grab;
+  padding: var(--space-2) var(--space-2);
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition);
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.rank-handle:active { cursor: grabbing; color: var(--green-500); }
+
+.rank-placeholder {
+  background: color-mix(in oklab, var(--green-300), transparent 75%);
+  border: 2px dashed var(--green-300);
+  border-radius: var(--radius-sm);
+  margin: 2px 0;
+}
+
+/* Store logo image (replaces text badge) */
+.store-logo-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+.store-info { flex:1; min-width:0; }
+.store-brand {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.store-size {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* Selection radio circle */
+.store-select {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2.5px solid var(--border);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color var(--transition), background var(--transition);
+}
+.store-row.selected .store-select {
+  border-color: var(--green-500);
+  background: var(--green-500);
+}
+.store-row.selected .store-select::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* Whole row highlight when selected */
+.store-row.selected {
+  background: var(--green-50);
+}
+[data-theme='dark'] .store-row.selected {
+  background: rgba(74,154,108,.10);
+}
+
+.picks-footer {
+  padding: var(--space-4) var(--space-5) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  background: var(--card-bg);
+  border-top: 1px solid var(--card-border);
+}
+.picks-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ==========================================
+   REVEAL SCREEN
+   ========================================== */
+.reveal-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  overflow-y: auto;
+}
+
+.reveal-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 350ms ease, transform 350ms ease;
+}
+.reveal-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-product-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--card-border);
+}
+.reveal-product-header .product-emoji { font-size: 26px; }
+.reveal-product-header .product-name  { font-family: var(--font-display); font-size: 16px; }
+
+.reveal-store-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4);
+  border-bottom: 1px solid var(--card-border);
+  position: relative;
+}
+.reveal-store-row:last-child { border-bottom: none; }
+
+/* winner row */
+.reveal-store-row.winner {
+  background: var(--green-50);
+}
+[data-theme='dark'] .reveal-store-row.winner {
+  background: rgba(74,154,108,.10);
+}
+.reveal-store-row.winner-picked {
+  background: #f0faf3;
+}
+[data-theme='dark'] .reveal-store-row.winner-picked {
+  background: rgba(74,154,108,.16);
+}
+
+.reveal-price-col {
+  margin-left: auto;
+  text-align: right;
+  flex-shrink: 0;
+}
+.reveal-price {
+  font-family: var(--font-display);
+  font-size: 16px;
+  color: var(--text);
+}
+.reveal-price-per {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+.reveal-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.reveal-badge.correct { background: #d4edda; }
+.reveal-badge.wrong   { background: #fde8e8; }
+.reveal-badge.neutral { background: var(--card-border); }
+
+/* Special flame tag */
+.special-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--amber-500);
+  background: var(--amber-50);
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-top: 2px;
+  border: 1px solid #fde68a;
+}
+[data-theme='dark'] .special-tag { background: #2a1f00; border-color: #6b4f00; }
+
+/* Cheapest banner */
+.cheapest-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green-700);
+  background: var(--green-100);
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-top: 3px;
+}
+[data-theme='dark'] .cheapest-banner { background: var(--green-800); color: var(--green-300); }
+
+.reveal-footer {
+  padding: var(--space-4) var(--space-5) var(--space-6);
+  background: var(--card-bg);
+  border-top: 1px solid var(--card-border);
+}
+
+/* ==========================================
+   RESULTS SCREEN
+   ========================================== */
+.results-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-5) var(--space-8);
+  overflow-y: auto;
+  align-items: stretch;
+}
+
+/* Overspend hero */
+.overspend-hero {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-5);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.overspend-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-3);
+}
+.overspend-amount {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 12vw, 64px);
+  line-height: 1;
+  color: var(--red-500);
+}
+.overspend-amount.perfect { color: var(--green-500); }
+.overspend-sublabel {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: var(--space-3);
+}
+
+/* Score chips row */
+.score-chips {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.score-chip {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.score-chip.correct { background: #d4edda; color: #1a5c2a; }
+.score-chip.wrong   { background: var(--red-100); color: var(--red-500); }
+[data-theme='dark'] .score-chip.correct { background: rgba(74,154,108,.20); color: var(--green-300); }
+[data-theme='dark'] .score-chip.wrong   { background: rgba(214,59,59,.15); color: #f87171; }
+
+/* Breakdown table */
+.breakdown-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.breakdown-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  border-bottom: 1px solid var(--card-border);
+}
+.breakdown-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--card-border);
+}
+.breakdown-row:last-child { border-bottom: none; }
+.breakdown-emoji { font-size: 22px; }
+.breakdown-info { flex:1; min-width:0; }
+.breakdown-name { font-size: 14px; font-weight:600; color: var(--text); }
+.breakdown-pick { font-size: 12px; color: var(--text-muted); margin-top:2px; }
+.breakdown-result {
+  text-align: right;
+  flex-shrink: 0;
+}
+.breakdown-overspend {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--red-500);
+}
+.breakdown-overspend.zero { color: var(--green-500); }
+.breakdown-tick { font-size: 18px; }
+
+/* Streak badge */
+.streak-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+.streak-icon { font-size: 36px; line-height:1; }
+.streak-text { flex:1; }
+.streak-num {
+  font-family: var(--font-display);
+  font-size: 28px;
+  color: var(--text);
+  line-height:1;
+}
+.streak-desc { font-size: 13px; color: var(--text-muted); margin-top:3px; }
+
+/* Share card preview */
+.share-preview {
+  background: var(--green-800);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  color: #fff;
+  font-family: var(--font-display);
+}
+.share-preview-title {
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--space-2);
+}
+.share-preview-date { font-size: 13px; opacity:.6; font-family:var(--font-body); margin-bottom:var(--space-4); }
+.share-preview-dots { font-size: 22px; letter-spacing: 4px; margin-bottom: var(--space-4); }
+.share-preview-overpaid { font-size: 15px; margin-bottom: var(--space-2); font-family:var(--font-body); font-weight:600; }
+.share-preview-streak { font-size: 13px; opacity:.7; font-family:var(--font-body); }
+.share-preview-url { font-size: 11px; opacity:.5; margin-top:var(--space-4); font-family:var(--font-body); }
+
+.btn-share {
+  display: block;
+  width: 100%;
+  padding: 18px var(--space-6);
+  background: var(--green-400);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 17px;
+  letter-spacing: 0.03em;
+  border: none;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-share:active { transform: scale(0.97); }
+
+.countdown-row {
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.countdown-row strong { color: var(--text); font-weight:700; }
+
+/* ---- Reveal position badge ---- */
+.rank-badge-reveal {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  background: var(--bg);
+  border: 1.5px solid var(--card-border);
+}
+
+/* Reveal row states */
+.reveal-store-row.reveal-row-correct {
+  background: #f0faf3;
+}
+[data-theme='dark'] .reveal-store-row.reveal-row-correct {
+  background: rgba(74,154,108,.12);
+}
+.reveal-store-row.reveal-row-wrong {
+  background: #fff5f5;
+}
+[data-theme='dark'] .reveal-store-row.reveal-row-wrong {
+  background: rgba(214,59,59,.08);
+}
+
+.reveal-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.reveal-should-be {
+  font-size: 11px;
+  color: var(--green-500);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+/* Dots in reveal product header */
+.reveal-dots {
+  font-size: 16px;
+  letter-spacing: 2px;
+  flex-shrink: 0;
+}
+
+/* ---- Score grid (results screen) ---- */
+.score-grid {
+  background: var(--card-bg);
+  border: 1.5px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+.score-grid-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.score-grid-emoji { font-size: 24px; width: 32px; }
+.score-grid-squares {
+  display: flex;
+  gap: 6px;
+  flex: 1;
+}
+.score-sq {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.sq-correct { background: #4a9a6c; }
+.sq-wrong   { background: #d63b3b; }
+.score-grid-tally {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--text-muted);
+  min-width: 28px;
+  text-align: right;
+}
+
+/* ---- Share card grid rows ---- */
+.share-grid-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: var(--space-3) 0;
+}
+.share-grid-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 14px;
+}
+.share-squares {
+  font-size: 18px;
+  letter-spacing: 2px;
+  flex: 1;
+}
+.share-tally {
+  font-size: 12px;
+  opacity: 0.65;
+  white-space: nowrap;
+}
+.share-puzzle-num {
+  font-size: 14px;
+  opacity: 0.6;
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+/* ---- Flash Special badges ---- */
+.flash-pick-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #7c3aed;
+  background: #ede9fe;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #c4b5fd;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+[data-theme='dark'] .flash-pick-badge { background: #2e1065; color: #c4b5fd; border-color: #5b21b6; }
+
+.flash-header-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #7c3aed;
+  background: #ede9fe;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #c4b5fd;
+  vertical-align: middle;
+  margin-left: 6px;
+}
+[data-theme='dark'] .flash-header-tag { background: #2e1065; color: #c4b5fd; border-color: #5b21b6; }
+
+.flash-tag {
+  color: #7c3aed !important;
+  background: #ede9fe !important;
+  border-color: #c4b5fd !important;
+}
+[data-theme='dark'] .flash-tag { background: #2e1065 !important; color: #c4b5fd !important; border-color: #5b21b6 !important; }
+
+/* ---- Shop compare in results hero ---- */
+.shop-compare {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 var(--space-3);
+  width: 100%;
+  max-width: 240px;
+}
+.shop-compare-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+}
+.shop-compare-label { color: var(--text-muted); font-weight: 500; }
+.shop-compare-value { font-family: var(--font-display); font-size: 16px; }
+.shop-compare-value.perfect { color: var(--green-500); }
+.shop-compare-value.wrong   { color: var(--red-500); }
+
+/* ---- Share preview shops line ---- */
+.share-preview-shops {
+  font-size: 13px;
+  opacity: 0.75;
+  font-family: var(--font-body);
+  margin-bottom: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+@keyframes popIn {
+  0%   { transform: scale(0.85); opacity:0; }
+  70%  { transform: scale(1.04); opacity:1; }
+  100% { transform: scale(1); }
+}
+.pop-in { animation: popIn 300ms ease forwards; }
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity:0; }
+  to   { transform: translateY(0);    opacity:1; }
+}
+.slide-up { animation: slideUp 300ms ease forwards; }
+
+/* ==========================================
+   MOBILE-FIRST POLISH
+   Priority: touch targets, readability,
+   drag comfort, safe-area insets
+   ========================================== */
+
+/* Safe area padding for iPhone notch/home bar */
+.picks-footer,
+.reveal-footer {
+  padding-bottom: max(var(--space-6), env(safe-area-inset-bottom, 16px));
+}
+.results-body {
+  padding-bottom: max(var(--space-8), env(safe-area-inset-bottom, 20px));
+}
+
+/* Prevent text size inflation on rotation */
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+/* ---- Rank row: bigger touch target ---- */
+.rank-row {
+  min-height: 72px;
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-4);
+}
+
+/* ---- Drag handle: much bigger tap area ---- */
+.rank-handle {
+  font-size: 24px;
+  padding: var(--space-3) var(--space-4);
+  min-width: 48px;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  touch-action: none;
+}
+.rank-handle:active {
+  background: var(--green-100);
+  color: var(--green-600);
+}
+[data-theme='dark'] .rank-handle:active {
+  background: var(--green-800);
+}
+
+/* ---- Store logo in rank row: slightly larger ---- */
+.store-logo-img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+/* ---- Store brand text: slightly bigger for readability ---- */
+.store-brand {
+  font-size: 14px;
+  font-weight: 700;
+}
+.store-size {
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* ---- Product card: tighter header on small screens ---- */
+.product-header {
+  padding: var(--space-3) var(--space-4);
+}
+.product-name {
+  font-size: clamp(15px, 4vw, 18px);
+}
+.product-emoji { font-size: 26px; }
+
+/* ---- Rank instruction: compact ---- */
+.rank-instruction {
+  padding: var(--space-2) var(--space-4);
+  font-size: 11px;
+}
+
+/* ---- Rank badge: crisp ---- */
+.rank-badge {
+  width: 26px;
+  height: 26px;
+  font-size: 12px;
+}
+
+/* ---- Picks body: less gap on small screens ---- */
+@media (max-height: 700px) {
+  .picks-body { gap: var(--space-3); padding: var(--space-3) var(--space-4); }
+  .product-header { padding: var(--space-3); }
+  .rank-row { min-height: 64px; }
+}
+
+/* ---- Confirm button: always visible, good height ---- */
+.btn-confirm {
+  padding: 16px var(--space-6);
+  font-size: 16px;
+}
+
+/* ---- Reveal rows: comfortable spacing ---- */
+.reveal-store-row {
+  min-height: 68px;
+  padding: var(--space-3) var(--space-4);
+  gap: var(--space-3);
+}
+.reveal-price {
+  font-size: 17px;
+  font-weight: 900;
+}
+.reveal-price-per {
+  font-size: 11px;
+}
+
+/* ---- Results: overspend hero ---- */
+.overspend-hero {
+  padding: var(--space-5) var(--space-5);
+}
+.overspend-amount {
+  font-size: clamp(40px, 14vw, 64px);
+}
+.shop-compare {
+  max-width: 100%;
+  width: 100%;
+}
+.shop-compare-row {
+  padding: var(--space-2) var(--space-3);
+}
+.shop-compare-label { font-size: 13px; }
+.shop-compare-value { font-size: 15px; }
+
+/* ---- Score grid squares: bigger and cleaner ---- */
+.score-sq {
+  width: 34px;
+  height: 34px;
+  border-radius: 7px;
+}
+
+/* ---- Share card: better mobile layout ---- */
+.share-preview {
+  padding: var(--space-5);
+}
+.share-preview-title { font-size: 17px; }
+.share-grid-line { font-size: 15px; }
+.share-squares { font-size: 20px; letter-spacing: 3px; }
+.share-tally { font-size: 13px; }
+
+/* ---- Intro screen: better spacing ---- */
+.intro-body {
+  padding: var(--space-5) var(--space-5) var(--space-6);
+  gap: var(--space-4);
+}
+.intro-game-logo {
+  width: min(220px, 65vw);
+}
+.intro-store-logo {
+  width: 68px;
+  height: 68px;
+}
+.intro-sub {
+  font-size: 14px;
+}
+.btn-primary {
+  padding: 17px var(--space-5);
+  font-size: 16px;
+}
+
+/* ---- Top bar logo: ensure it renders ---- */
+.top-bar-logo {
+  height: 32px;
+  min-width: 0;
+  object-fit: contain;
+}
+
+/* ---- Breakdown card: tighter ---- */
+.breakdown-row {
+  padding: var(--space-3) var(--space-4);
+}
+.breakdown-name { font-size: 14px; }
+.breakdown-pick { font-size: 11px; }
+.breakdown-overspend { font-size: 14px; }
+
+/* ---- Streak card ---- */
+.streak-card { padding: var(--space-4) var(--space-5); }
+.streak-icon { font-size: 32px; }
+.streak-num  { font-size: 26px; }
+
+/* ---- Smooth momentum scroll ---- */
+.picks-body,
+.reveal-body,
+.results-body {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* ---- Active drag: visual feedback on row ---- */
+.rank-row.dragging {
+  opacity: 0.5;
+}
+
+/* ---- Placeholder height (match row) ---- */
+.rank-placeholder {
+  min-height: 72px;
+}
+
+/* ---- Countdown timer ---- */
+.countdown-row {
+  font-size: 14px;
+  padding: var(--space-2) 0 var(--space-4);
+}

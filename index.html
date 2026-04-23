@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="theme-color" content="#1a3a2a"/>
+  <title>Shelfie 🛒</title>
+  <meta name="description" content="The daily supermarket price game Australians will argue about."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<!-- ===== SCREEN: INTRO ===== -->
+<section class="screen active" id="screenIntro">
+  <header class="top-bar">
+    <img class="top-bar-logo" id="topLogoIntro" alt="Shelfie"/>
+    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+  </header>
+
+  <div class="intro-body">
+    <img class="intro-game-logo" id="introGameLogo" alt="Shelfie"/>
+    <div class="intro-top-row">
+      <div class="date-pill" id="introPill"></div>
+      <div class="puzzle-num" id="introPuzzleNum"></div>
+    </div>
+    <p class="intro-sub">3 products. Rank cheapest to most expensive.<br>Find out how much you overpay.</p>
+
+    <div class="intro-store-logos">
+      <img class="intro-store-logo" id="introAldi" alt="Aldi"/>
+      <img class="intro-store-logo" id="introColes" alt="Coles"/>
+      <img class="intro-store-logo" id="introWoolworths" alt="Woolworths"/>
+    </div>
+
+    <div class="streak-row" id="introStreakRow"></div>
+
+    <button class="btn-primary" id="btnPlay">Play today's puzzle</button>
+    <p class="intro-disclaimer" id="introDisclaimer"></p>
+  </div>
+</section>
+
+<!-- ===== SCREEN: PICKS ===== -->
+<section class="screen" id="screenPicks">
+  <header class="top-bar">
+    <img class="top-bar-logo" alt="Shelfie"/>
+    <button class="icon-btn theme-toggle" aria-label="Toggle theme">🌙</button>
+  </header>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div class="picks-body" id="picksBody">
+    <!-- Product cards injected here -->
+  </div>
+
+  <div class="picks-footer">
+    <p class="picks-hint" id="picksHint">Drag ⠿ to rank each store cheapest → most expensive</p>
+    <button class="btn-primary btn-confirm" id="btnConfirm" disabled>Confirm my rankings →</button>
+  </div>
+</section>
+
+<!-- ===== SCREEN: REVEAL ===== -->
+<section class="screen" id="screenReveal">
+  <header class="top-bar">
+    <img class="top-bar-logo" alt="Shelfie"/>
+    <button class="icon-btn theme-toggle" aria-label="Toggle theme">🌙</button>
+  </header>
+
+  <div class="reveal-body" id="revealBody">
+    <!-- Reveal cards injected here -->
+  </div>
+
+  <div class="reveal-footer">
+    <button class="btn-primary" id="btnResults">See my score →</button>
+  </div>
+</section>
+
+<!-- ===== SCREEN: RESULTS ===== -->
+<section class="screen" id="screenResults">
+  <header class="top-bar">
+    <img class="top-bar-logo" alt="Shelfie"/>
+    <button class="icon-btn theme-toggle" aria-label="Toggle theme">🌙</button>
+  </header>
+
+  <div class="results-body" id="resultsBody">
+    <!-- Results injected here -->
+  </div>
+</section>
+
+<script src="logos.js"></script>
+<script src="data.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
