@@ -1,95 +1,99 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
-  <meta name="apple-mobile-web-app-capable" content="yes"/>
-  <meta name="theme-color" content="#1a3a2a"/>
-  <title>Shelfie 🛒</title>
-  <meta name="description" content="The daily supermarket price game Australians will argue about."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="style.css"/>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  />
+  <title>Shelfie</title>
+  <meta
+    name="description"
+    content="Shelfie - stack the shelf from highest price to lowest in the least moves."
+  />
+  <link rel="icon" href="./assets/shelfielogo.png" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to game</a>
 
-<!-- ===== SCREEN: INTRO ===== -->
-<section class="screen active" id="screenIntro">
-  <header class="top-bar">
-    <img class="top-bar-logo" id="topLogoIntro" alt="Shelfie"/>
-    <button class="icon-btn theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
-  </header>
+  <div class="app-shell">
+    <header class="topbar">
+      <p class="game-date" id="game-date">Game: Loading...</p>
+    </header>
 
-  <div class="intro-body">
-    <img class="intro-game-logo" id="introGameLogo" alt="Shelfie"/>
-    <div class="intro-top-row">
-      <div class="date-pill" id="introPill"></div>
-      <div class="puzzle-num" id="introPuzzleNum"></div>
-    </div>
-    <p class="intro-sub">3 products. Rank cheapest to most expensive.<br>Find out how much you overpay.</p>
+    <main id="main-content" class="game-layout">
+      <section class="brand-panel" aria-label="Game heading">
+        <img
+          class="logo"
+          src="./assets/shelfielogo.png"
+          alt="Shelfie logo"
+          width="220"
+          height="120"
+        />
+        <h1 class="game-title">
+          Stack the shelf from highest price to lowest in the least moves
+        </h1>
+      </section>
 
-    <div class="intro-store-logos">
-      <img class="intro-store-logo" id="introAldi" alt="Aldi"/>
-      <img class="intro-store-logo" id="introColes" alt="Coles"/>
-      <img class="intro-store-logo" id="introWoolworths" alt="Woolworths"/>
-    </div>
+      <section class="game-board" aria-label="Shelfie game board">
+        <div class="shelf-area">
+          <div class="shelf-frame" id="shelf">
+            <!-- 7 rows: shelf slot + price strip + tray slot -->
+            <div class="shelf-row" data-row="0">
+              <div class="shelf-slot" data-slot="0"></div>
+              <div class="price-strip" data-price-slot="0"></div>
+              <div class="tray-slot" data-tray-slot="0"></div>
+            </div>
+            <div class="shelf-row" data-row="1">
+              <div class="shelf-slot" data-slot="1"></div>
+              <div class="price-strip" data-price-slot="1"></div>
+              <div class="tray-slot" data-tray-slot="1"></div>
+            </div>
+            <div class="shelf-row" data-row="2">
+              <div class="shelf-slot" data-slot="2"></div>
+              <div class="price-strip" data-price-slot="2"></div>
+              <div class="tray-slot" data-tray-slot="2"></div>
+            </div>
+            <div class="shelf-row" data-row="3">
+              <div class="shelf-slot" data-slot="3"></div>
+              <div class="price-strip" data-price-slot="3"></div>
+              <div class="tray-slot" data-tray-slot="3"></div>
+            </div>
+            <div class="shelf-row" data-row="4">
+              <div class="shelf-slot" data-slot="4"></div>
+              <div class="price-strip" data-price-slot="4"></div>
+              <div class="tray-slot" data-tray-slot="4"></div>
+            </div>
+            <div class="shelf-row" data-row="5">
+              <div class="shelf-slot" data-slot="5"></div>
+              <div class="price-strip" data-price-slot="5"></div>
+              <div class="tray-slot" data-tray-slot="5"></div>
+            </div>
+            <div class="shelf-row" data-row="6">
+              <div class="shelf-slot" data-slot="6"></div>
+              <div class="price-strip" data-price-slot="6"></div>
+              <div class="tray-slot" data-tray-slot="6"></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <div class="streak-row" id="introStreakRow"></div>
+      <section class="feedback-panel" aria-label="Game feedback">
+        <p class="turns" id="turns">Turn 1 of 6</p>
+        <p class="status-message" id="status-message">
+          Arrange all 7 items, then press submit.
+        </p>
+      </section>
 
-    <button class="btn-primary" id="btnPlay">Play today's puzzle</button>
-    <p class="intro-disclaimer" id="introDisclaimer"></p>
+      <section class="actions" aria-label="Game actions">
+        <button class="submit-button" id="submit-button" type="button">
+          submit
+        </button>
+      </section>
+    </main>
   </div>
-</section>
 
-<!-- ===== SCREEN: PICKS ===== -->
-<section class="screen" id="screenPicks">
-  <header class="top-bar">
-    <img class="top-bar-logo" alt="Shelfie"/>
-    <button class="icon-btn theme-toggle" aria-label="Toggle theme">🌙</button>
-  </header>
-  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-
-  <div class="picks-body" id="picksBody">
-    <!-- Product cards injected here -->
-  </div>
-
-  <div class="picks-footer">
-    <p class="picks-hint" id="picksHint">Drag ⠿ to rank each store cheapest → most expensive</p>
-    <button class="btn-primary btn-confirm" id="btnConfirm" disabled>Confirm my rankings →</button>
-  </div>
-</section>
-
-<!-- ===== SCREEN: REVEAL ===== -->
-<section class="screen" id="screenReveal">
-  <header class="top-bar">
-    <img class="top-bar-logo" alt="Shelfie"/>
-    <button class="icon-btn theme-toggle" aria-label="Toggle theme">🌙</button>
-  </header>
-
-  <div class="reveal-body" id="revealBody">
-    <!-- Reveal cards injected here -->
-  </div>
-
-  <div class="reveal-footer">
-    <button class="btn-primary" id="btnResults">See my score →</button>
-  </div>
-</section>
-
-<!-- ===== SCREEN: RESULTS ===== -->
-<section class="screen" id="screenResults">
-  <header class="top-bar">
-    <img class="top-bar-logo" alt="Shelfie"/>
-    <button class="icon-btn theme-toggle" aria-label="Toggle theme">🌙</button>
-  </header>
-
-  <div class="results-body" id="resultsBody">
-    <!-- Results injected here -->
-  </div>
-</section>
-
-<script src="logos.js"></script>
-<script src="data.js"></script>
-<script src="game.js"></script>
+  <script src="./app.js" defer></script>
 </body>
 </html>

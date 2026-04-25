@@ -1,0 +1,38 @@
+DATE: YYYY-MM-DD
+LABEL: Day DD Month
+MAX_ATTEMPTS: 6
+
+ITEM
+NAME: 
+PRICE: 
+IMAGE: ./assets/
+
+ITEM
+NAME: 
+PRICE: 
+IMAGE: ./assets/
+
+ITEM
+NAME: 
+PRICE: 
+IMAGE: ./assets/
+
+ITEM
+NAME: 
+PRICE: 
+IMAGE: ./assets/
+
+ITEM
+NAME: 
+PRICE: 
+IMAGE: ./assets/
+
+ITEM
+NAME: 
+PRICE: 
+IMAGE: ./assets/
+
+ITEM
+NAME: 
+PRICE: 
+IMAGE: ./assets/

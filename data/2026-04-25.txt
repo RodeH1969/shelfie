@@ -1,0 +1,45 @@
+DATE: 2026-04-25
+LABEL: Sunday 25 April
+MAX_ATTEMPTS: 6
+
+ITEM
+NAME: Woolworths Vegemite 560g
+STORE: Woolworths
+PRICE: 9.90
+IMAGE: ./assets/woolworths-vegemite-560g.png
+
+ITEM
+NAME: Aldi Urban Eats Pork Dumplings 750g
+STORE: Aldi
+PRICE: 8.99
+IMAGE: ./assets/aldi-urban-eats-pork-dumplings-750g.png
+
+ITEM
+NAME: Aldi Grand Padano 250g
+STORE: Aldi
+PRICE: 8.29
+IMAGE: ./assets/aldi-grand-padano-250g.png
+
+ITEM
+NAME: A2 Full Cream Milk 2L
+STORE: Coles
+PRICE: 6.90
+IMAGE: ./assets/coles-a2-full-cream-milk-2l.png
+
+ITEM
+NAME: Woolworths Red Rock Deli Potato Chips 165g
+STORE: Woolworths
+PRICE: 6.00
+IMAGE: ./assets/woolworths-red-rock-deli-potato-chips-165g.png
+
+ITEM
+NAME: Aldi Choco Pillows 500g
+STORE: Aldi
+PRICE: 4.69
+IMAGE: ./assets/aldi-choco-pillows-500g.png
+
+ITEM
+NAME: Coles Cadbury Chomp bar 30g
+STORE: Coles
+PRICE: 1.00
+IMAGE: ./assets/coles-cadbury-chomp-bar-30g.png

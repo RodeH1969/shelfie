@@ -1,0 +1,452 @@
+:root {
+  --bg: #f2f2f2;
+  --panel: #ffffff;
+  --text: #1e1e1e;
+  --muted: #6c6c6c;
+
+  --rack-dark: #525252;
+  --rack-mid: #8b8b8b;
+  --rack-light: #d9d9d9;
+  --rack-shelf: #f7f7f7;
+  --rack-shadow: rgba(0, 0, 0, 0.14);
+
+  --accent: #ff5a4f;
+  --accent-dark: #db443c;
+  --success: #33a852;
+  --error: #e14a4a;
+  --focus: #2374ff;
+
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 8px 18px rgba(0, 0, 0, 0.12);
+  --shadow-button: 0 10px 24px rgba(255, 90, 79, 0.3);
+
+  --slot-height: 112px;
+  --slot-gap: 12px;
+  --app-max: 980px;
+
+  --font-main: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: var(--font-main);
+  background:
+    radial-gradient(circle at top, #fafafa 0%, #f2f2f2 50%, #ececec 100%);
+  color: var(--text);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+}
+
+.skip-link:focus {
+  left: 16px;
+  top: 16px;
+  z-index: 1000;
+  background: #fff;
+  color: #000;
+  padding: 10px 14px;
+  border-radius: 10px;
+  outline: 2px solid var(--focus);
+}
+
+.app-shell {
+  width: 100%;
+  max-width: var(--app-max);
+  margin: 0 auto;
+  padding: 12px 14px 28px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 34px;
+  margin-bottom: 6px;
+}
+
+.game-date {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  color: #8b4f71;
+  font-weight: 700;
+  text-align: center;
+}
+
+.game-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.brand-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: min(58vw, 220px);
+}
+
+.game-title {
+  margin: 0;
+  max-width: 320px;
+  text-align: center;
+  font-size: clamp(1rem, 3.5vw, 1.45rem);
+  line-height: 1.28;
+  font-weight: 500;
+}
+
+.game-board {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.shelf-area {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+  width: 100%;
+}
+
+.shelf-frame {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  padding: 14px 12px;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, #bdbdbd 0%, #969696 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.5),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.18),
+    0 16px 34px rgba(0, 0, 0, 0.16);
+}
+
+/* side rails */
+.shelf-frame::before,
+.shelf-frame::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  width: 14px;
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, #6b6b6b 0%, #4d4d4d 50%, #7e7e7e 100%);
+  box-shadow:
+    inset 2px 0 2px rgba(255, 255, 255, 0.2),
+    inset -2px 0 3px rgba(0, 0, 0, 0.28);
+  z-index: 0;
+}
+
+.shelf-frame::before {
+  left: 6px;
+}
+
+.shelf-frame::after {
+  right: 6px;
+}
+
+/* each row: shelf slot + price strip + tray slot */
+.shelf-row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: stretch;
+  column-gap: 6px;
+  margin-bottom: var(--slot-gap);
+}
+
+.shelf-row:last-child {
+  margin-bottom: 0;
+}
+
+.shelf-slot {
+  position: relative;
+  min-height: var(--slot-height);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, #fafafa 0%, #eeeeee 100%);
+  border: 3px solid rgba(36, 36, 36, 0.9);
+  box-shadow:
+    inset 0 10px 14px rgba(255, 255, 255, 0.65),
+    inset 0 -10px 14px rgba(0, 0, 0, 0.07),
+    0 4px 10px rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+/* shelf lip */
+.shelf-slot::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: -7px;
+  height: 12px;
+  border-radius: 0 0 12px 12px;
+  background:
+    linear-gradient(180deg, #6f6f6f 0%, #3f3f3f 100%);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.18);
+}
+
+.shelf-slot.is-drop-target {
+  outline: 4px solid rgba(35, 116, 255, 0.28);
+  outline-offset: 2px;
+  transform: scale(1.01);
+}
+
+.shelf-slot.is-correct {
+  border-color: var(--success);
+  box-shadow:
+    inset 0 10px 14px rgba(255, 255, 255, 0.65),
+    0 0 0 4px rgba(51, 168, 82, 0.18);
+}
+
+.shelf-slot.is-wrong {
+  border-color: var(--error);
+  box-shadow:
+    inset 0 10px 14px rgba(255, 255, 255, 0.65),
+    0 0 0 4px rgba(225, 74, 74, 0.18);
+}
+
+/* default empty price strip/tray slot */
+.price-strip,
+.tray-slot {
+  min-height: var(--slot-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* tray slots should not look like shelves */
+.tray-slot {
+  padding: 4px;
+  position: relative;          /* so tooltip can sit above */
+  overflow: visible;
+}
+
+/* cards */
+.product-card {
+  position: relative;
+  width: 100%;
+  min-height: 88px;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: var(--shadow-card);
+  padding: 8px 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.product-card.is-locked {
+  opacity: 0.65;
+}
+
+.product-card.is-dragging {
+  opacity: 0.85;
+  transform: scale(1.04);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18);
+  z-index: 20;
+}
+
+.product-card img {
+  max-height: 72px;
+  width: auto;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* tooltip for tray cards (name only, no price) */
+.product-tooltip {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  transform: translateY(-6px);
+  max-width: 200px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: #333;
+  z-index: 50;
+  white-space: normal;
+}
+
+/* feedback & actions */
+.feedback-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.turns,
+.status-message {
+  margin: 0;
+  text-align: center;
+}
+
+.turns {
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+.status-message {
+  max-width: 320px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 2px;
+}
+
+.submit-button {
+  min-width: 168px;
+  min-height: 56px;
+  padding: 14px 28px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(180deg, #ff6559 0%, #ff4f45 100%);
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  box-shadow: var(--shadow-button);
+}
+
+.submit-button:hover {
+  background: linear-gradient(180deg, #ff7267 0%, #ff564b 100%);
+}
+
+.submit-button:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.submit-button:focus-visible,
+.product-card:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* wider screens */
+@media (min-width: 540px) {
+  .app-shell {
+    padding: 16px 18px 36px;
+  }
+
+  .shelf-frame {
+    max-width: 420px;
+    padding: 16px 14px;
+  }
+
+  .product-card {
+    min-height: 96px;
+  }
+
+  .product-card img {
+    max-height: 78px;
+  }
+
+  .submit-button {
+    min-width: 190px;
+    min-height: 60px;
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-width: 768px) {
+  :root {
+    --slot-height: 122px;
+    --slot-gap: 14px;
+  }
+
+  .app-shell {
+    padding: 20px 24px 42px;
+  }
+
+  .game-layout {
+    gap: 22px;
+  }
+
+  .logo {
+    width: min(34vw, 240px);
+  }
+
+  .game-title {
+    max-width: 520px;
+    font-size: clamp(1.1rem, 2.4vw, 1.7rem);
+  }
+
+  .shelf-frame {
+    max-width: 460px;
+  }
+
+  .status-message {
+    max-width: 420px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
