@@ -50,7 +50,9 @@ function savePlayedToday(dateString, data = {}) {
   }
 }
 
-function lockGameForToday(message = "You’ve already played today’s Shelfie. Come back tomorrow.") {
+function lockGameForToday(
+  message = "You’ve already played today’s Shelfie. Come back tomorrow."
+) {
   state.alreadyPlayedToday = true;
   state.lockedIds = new Set(state.items.map(item => item.id));
   state.draggingId = null;
@@ -254,9 +256,19 @@ function createCard(item, inTray) {
   img.draggable = false;
   button.appendChild(img);
 
-  if (!state.lockedIds.has(item.id) && !state.alreadyPlayedToday) {
+  // touch tray: tap opens viewer directly, no drag
+  if (inTray && !state.lockedIds.has(item.id) && !state.alreadyPlayedToday && isTouchLike()) {
+    button.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      openImageViewer(item);
+    });
+  }
+
+  if (!state.lockedIds.has(item.id) && !state.alreadyPlayedToday && !isTouchLike()) {
+    // desktop / non-touch: keep drag behavior
     attachPointerDrag(button, item, inTray);
-  } else {
+  } else if (state.lockedIds.has(item.id) || state.alreadyPlayedToday) {
     button.classList.add("is-locked");
     button.disabled = true;
   }
@@ -414,9 +426,8 @@ function attachPointerDrag(element, item, inTray) {
     state.draggingId = null;
 
     if (!movedEnough) {
-      if (pointerType === "touch" && inTray) {
-        openImageViewer(item);
-      } else if (pointerType === "mouse" && inTray) {
+      // mouse in tray: still show tooltip; touch tray handled by click listener
+      if (pointerType === "mouse" && inTray) {
         showNameTooltip(element, item);
       }
 
@@ -554,13 +565,15 @@ function updateSubmitState() {
 
 function handleSubmit() {
   if (state.alreadyPlayedToday) {
-    statusEl.textContent = "You’ve already played today’s Shelfie. Come back tomorrow.";
+    statusEl.textContent =
+      "You’ve already played today’s Shelfie. Come back tomorrow.";
     submitButton.disabled = true;
     return;
   }
 
   if (!state.slots.every(Boolean)) {
-    statusEl.textContent = "Drag all 7 items onto the shelf before submitting.";
+    statusEl.textContent =
+      "Drag all 7 items onto the shelf before submitting.";
     return;
   }
 
