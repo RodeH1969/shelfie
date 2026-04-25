@@ -12,6 +12,7 @@ const state = {
   puzzleDate: "",
   puzzleLabel: "",
   items: [],
+  trayOrder: [],
   slots: new Array(7).fill(null),
   lockedIds: new Set(),
   history: [],
@@ -42,24 +43,16 @@ async function init() {
     state.puzzleLabel = puzzle.label;
     state.maxAttempts = Number(puzzle.maxAttempts) || 6;
 
-    // Build canonical items list used for scoring (kept in natural order)
     state.items = puzzle.items.map((item, index) => ({
       id: `${slugify(item.name)}-${index}`,
       name: item.name,
       store: item.store,
       price: Number(item.price),
-      image: item.image,
-      homeRow: index // will be remapped just for tray visual order
+      image: item.image
     }));
 
-    // Create a shuffled list of row indices ONLY so tray order is randomized
-    const rowIndices = [...state.items.keys()]; // [0, 1, 2, ...]
-    shuffleArray(rowIndices);
-
-    // Reassign homeRow from shuffled indices so the tray rows are scrambled
-    state.items.forEach((item, idx) => {
-      item.homeRow = rowIndices[idx];
-    });
+    state.trayOrder = [...state.items];
+    shuffleArray(state.trayOrder);
 
     state.slots = new Array(state.items.length).fill(null);
 
@@ -159,7 +152,7 @@ function renderTray() {
     trayEl.innerHTML = "";
     trayEl.className = "tray-slot";
 
-    const item = state.items[row];
+    const item = state.trayOrder[row];
     if (!item) return;
 
     const onShelfIndex = state.slots.findIndex(s => s && s.id === item.id);
@@ -594,7 +587,6 @@ function slugify(value) {
     .replace(/^-+|-+$/g, "");
 }
 
-// Fisher–Yates shuffle to randomize tray order fairly
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
