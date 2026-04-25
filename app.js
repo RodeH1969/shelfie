@@ -6,6 +6,8 @@ const turnsEl = document.getElementById("turns");
 const statusEl = document.getElementById("status-message");
 const submitButton = document.getElementById("submit-button");
 
+const DRAG_THRESHOLD = 10;
+
 const state = {
   maxAttempts: 6,
   attempt: 1,
@@ -16,7 +18,8 @@ const state = {
   slots: new Array(7).fill(null),
   lockedIds: new Set(),
   history: [],
-  draggingId: null
+  draggingId: null,
+  openTooltipId: null
 };
 
 init();
@@ -64,6 +67,7 @@ async function init() {
     renderTray();
     renderSlots();
     wireSubmit();
+    wireGlobalTapClose();
   } catch (error) {
     console.error(error);
     gameDateEl.textContent = "Game: Error";
@@ -207,8 +211,13 @@ function createCard(item, inTray) {
 
   if (inTray) {
     button.title = item.name;
-    button.addEventListener("mouseenter", () => showNameTooltip(button, item));
-    button.addEventListener("mouseleave", () => hideNameTooltip(button));
+
+    button.addEventListener("mouseenter", () => {
+      if (!isTouchLike()) showNameTooltip(button, item);
+    });
+    button.addEventListener("mouseleave", () => {
+      if (!isTouchLike()) hideNameTooltip(button);
+    });
     button.addEventListener("focus", () => showNameTooltip(button, item));
     button.addEventListener("blur", () => hideNameTooltip(button));
   }
@@ -217,7 +226,8 @@ function createCard(item, inTray) {
 }
 
 function showNameTooltip(button, item) {
-  hideNameTooltip(button);
+  hideAllTooltips();
+
   const wrapper = button.closest(".tray-slot");
   if (!wrapper) return;
 
@@ -225,6 +235,7 @@ function showNameTooltip(button, item) {
   tip.className = "product-tooltip";
   tip.textContent = item.name;
   wrapper.appendChild(tip);
+  state.openTooltipId = item.id;
 }
 
 function hideNameTooltip(button) {
@@ -233,6 +244,39 @@ function hideNameTooltip(button) {
 
   const tip = wrapper.querySelector(".product-tooltip");
   if (tip) tip.remove();
+
+  if (button.dataset.itemId === state.openTooltipId) {
+    state.openTooltipId = null;
+  }
+}
+
+function hideAllTooltips() {
+  document.querySelectorAll(".product-tooltip").forEach(tip => tip.remove());
+  state.openTooltipId = null;
+}
+
+function toggleTooltip(button, item) {
+  const wrapper = button.closest(".tray-slot");
+  if (!wrapper) return;
+
+  const existing = wrapper.querySelector(".product-tooltip");
+  if (existing) {
+    existing.remove();
+    state.openTooltipId = null;
+    return;
+  }
+
+  showNameTooltip(button, item);
+}
+
+function wireGlobalTapClose() {
+  document.addEventListener("pointerdown", event => {
+    const insideCard = event.target.closest(".product-card");
+    const insideTooltip = event.target.closest(".product-tooltip");
+    if (!insideCard && !insideTooltip) {
+      hideAllTooltips();
+    }
+  });
 }
 
 function attachPointerDrag(element, item) {
@@ -242,9 +286,13 @@ function attachPointerDrag(element, item) {
   let ghost = null;
   let shiftX = 0;
   let shiftY = 0;
+  let startX = 0;
+  let startY = 0;
   let currentX = 0;
   let currentY = 0;
+  let pointerType = "mouse";
   let dragging = false;
+  let movedEnough = false;
 
   element.style.touchAction = "none";
 
@@ -255,11 +303,13 @@ function attachPointerDrag(element, item) {
     const rect = element.getBoundingClientRect();
 
     pointerId = event.pointerId;
+    pointerType = event.pointerType || "mouse";
     dragging = true;
+    movedEnough = false;
     state.draggingId = item.id;
 
-    currentX = event.clientX;
-    currentY = event.clientY;
+    startX = currentX = event.clientX;
+    startY = currentY = event.clientY;
     shiftX = event.clientX - rect.left;
     shiftY = event.clientY - rect.top;
 
@@ -272,25 +322,7 @@ function attachPointerDrag(element, item) {
       startShelfIndex = state.slots.findIndex(s => s && s.id === item.id);
     }
 
-    ghost = element.cloneNode(true);
-    ghost.classList.add("is-dragging");
-    ghost.style.position = "fixed";
-    ghost.style.left = `${rect.left}px`;
-    ghost.style.top = `${rect.top}px`;
-    ghost.style.width = `${rect.width}px`;
-    ghost.style.height = `${rect.height}px`;
-    ghost.style.margin = "0";
-    ghost.style.pointerEvents = "none";
-    ghost.style.zIndex = "9999";
-    ghost.style.transform = "none";
-    document.body.appendChild(ghost);
-
-    element.classList.add("is-drag-origin");
-    hideNameTooltip(element);
-
     element.setPointerCapture(pointerId);
-    highlightSlotAt(currentX, currentY);
-
     event.preventDefault();
   });
 
@@ -299,6 +331,34 @@ function attachPointerDrag(element, item) {
 
     currentX = event.clientX;
     currentY = event.clientY;
+
+    const dx = currentX - startX;
+    const dy = currentY - startY;
+    const distance = Math.hypot(dx, dy);
+
+    if (!movedEnough && distance >= DRAG_THRESHOLD) {
+      movedEnough = true;
+      hideAllTooltips();
+
+      const rect = element.getBoundingClientRect();
+
+      ghost = element.cloneNode(true);
+      ghost.classList.add("is-dragging");
+      ghost.style.position = "fixed";
+      ghost.style.left = `${rect.left}px`;
+      ghost.style.top = `${rect.top}px`;
+      ghost.style.width = `${rect.width}px`;
+      ghost.style.height = `${rect.height}px`;
+      ghost.style.margin = "0";
+      ghost.style.pointerEvents = "none";
+      ghost.style.zIndex = "9999";
+      ghost.style.transform = "none";
+      document.body.appendChild(ghost);
+
+      element.classList.add("is-drag-origin");
+    }
+
+    if (!movedEnough) return;
 
     if (ghost) {
       ghost.style.left = `${currentX - shiftX}px`;
@@ -314,34 +374,55 @@ function attachPointerDrag(element, item) {
     dragging = false;
     state.draggingId = null;
 
+    if (!movedEnough) {
+      if (pointerType === "touch" && startLocation === "tray") {
+        toggleTooltip(element, item);
+      }
+
+      cleanupDrag(element, ghost, pointerId);
+      ghost = null;
+      resetTracking();
+      return;
+    }
+
     const dropIndex = getSlotIndexFromPoint(currentX, currentY);
 
     clearSlotHighlights();
-
-    if (ghost) {
-      ghost.remove();
-      ghost = null;
-    }
-
-    element.classList.remove("is-drag-origin");
-
     moveItem(item, startLocation, startShelfIndex, dropIndex);
 
-    if (element.hasPointerCapture(pointerId)) {
-      element.releasePointerCapture(pointerId);
-    }
+    cleanupDrag(element, ghost, pointerId);
+    ghost = null;
 
     renderTray();
     renderSlots();
     updateSubmitState();
 
-    pointerId = null;
-    startLocation = null;
-    startShelfIndex = -1;
+    resetTracking();
   };
 
   element.addEventListener("pointerup", finish);
   element.addEventListener("pointercancel", finish);
+
+  function cleanupDrag(elementRef, ghostRef, activePointerId) {
+    clearSlotHighlights();
+
+    if (ghostRef) {
+      ghostRef.remove();
+    }
+
+    elementRef.classList.remove("is-drag-origin");
+
+    if (elementRef.hasPointerCapture(activePointerId)) {
+      elementRef.releasePointerCapture(activePointerId);
+    }
+  }
+
+  function resetTracking() {
+    pointerId = null;
+    startLocation = null;
+    startShelfIndex = -1;
+    movedEnough = false;
+  }
 }
 
 function moveItem(item, startLocation, startShelfIndex, dropIndex) {
@@ -508,30 +589,33 @@ function showPriceStrip(index, item) {
   strip.style.flexDirection = "column";
   strip.style.justifyContent = "center";
   strip.style.alignItems = "flex-start";
-  strip.style.padding = "6px 8px";
-  strip.style.marginLeft = "6px";
-  strip.style.borderRadius = "12px";
+  strip.style.padding = "4px 6px";
+  strip.style.marginLeft = "2px";
+  strip.style.borderRadius = "10px";
   strip.style.background = "linear-gradient(180deg, #ffffff 0%, #f6fff9 100%)";
-  strip.style.boxShadow = "0 3px 8px rgba(0, 0, 0, 0.14)";
-  strip.style.minWidth = "120px";
+  strip.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.12)";
+  strip.style.minWidth = "0";
 
   const nameEl = document.createElement("div");
   nameEl.textContent = item.name;
-  nameEl.style.fontSize = "0.75rem";
-  nameEl.style.fontWeight = "600";
+  nameEl.style.fontSize = "0.62rem";
+  nameEl.style.fontWeight = "700";
+  nameEl.style.lineHeight = "1.1";
   nameEl.style.marginBottom = "2px";
 
   const storeEl = document.createElement("div");
   storeEl.textContent = item.store;
-  storeEl.style.fontSize = "0.7rem";
+  storeEl.style.fontSize = "0.58rem";
   storeEl.style.color = "#666";
+  storeEl.style.lineHeight = "1.1";
 
   const priceEl = document.createElement("div");
   priceEl.textContent = `$${item.price.toFixed(2)}`;
-  priceEl.style.fontSize = "1.1rem";
+  priceEl.style.fontSize = "0.9rem";
   priceEl.style.fontWeight = "800";
-  priceEl.style.marginTop = "4px";
+  priceEl.style.marginTop = "3px";
   priceEl.style.color = "#149c3a";
+  priceEl.style.lineHeight = "1";
 
   strip.appendChild(nameEl);
   strip.appendChild(storeEl);
@@ -567,6 +651,10 @@ async function shareResults() {
     console.error(error);
     statusEl.textContent = "Could not share right now.";
   }
+}
+
+function isTouchLike() {
+  return window.matchMedia("(hover: none)").matches;
 }
 
 function getBrisbaneDateString() {

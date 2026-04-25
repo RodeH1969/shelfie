@@ -4,29 +4,15 @@
   --text: #1e1e1e;
   --muted: #6c6c6c;
 
-  --rack-dark: #525252;
-  --rack-mid: #8b8b8b;
-  --rack-light: #d9d9d9;
-  --rack-shelf: #f7f7f7;
-  --rack-shadow: rgba(0, 0, 0, 0.14);
-
   --accent: #ff5a4f;
-  --accent-dark: #db443c;
   --success: #33a852;
   --error: #e14a4a;
   --focus: #2374ff;
 
-  --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 26px;
   --radius-pill: 999px;
 
-  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.08);
-  --shadow-card: 0 8px 18px rgba(0, 0, 0, 0.12);
-  --shadow-button: 0 10px 24px rgba(255, 90, 79, 0.3);
-
-  --slot-height: 92px;
-  --slot-gap: 8px;
+  --slot-height: 76px;
+  --slot-gap: 5px;
   --app-max: 980px;
 
   --font-main: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
@@ -46,12 +32,11 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100svh;
   min-height: 100dvh;
   font-family: var(--font-main);
-  background:
-    radial-gradient(circle at top, #fafafa 0%, #f2f2f2 50%, #ececec 100%);
+  background: radial-gradient(circle at top, #fafafa 0%, #f2f2f2 50%, #ececec 100%);
   color: var(--text);
-  overflow: hidden;
 }
 
 img {
@@ -87,14 +72,12 @@ textarea {
 .app-shell {
   width: 100%;
   max-width: var(--app-max);
-  min-height: 100vh;
-  min-height: 100svh;
-  min-height: 100dvh;
+  height: 100svh;
+  height: 100dvh;
   margin: 0 auto;
-  padding: 6px 10px 10px;
+  padding: 4px 8px 8px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   overflow: hidden;
 }
 
@@ -102,14 +85,15 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 24px;
-  margin-bottom: 2px;
+  min-height: 18px;
+  margin-bottom: 1px;
+  flex: 0 0 auto;
 }
 
 .game-date {
   margin: 0;
-  font-size: 0.78rem;
-  line-height: 1.1;
+  font-size: 0.72rem;
+  line-height: 1.05;
   color: #8b4f71;
   font-weight: 700;
   text-align: center;
@@ -118,8 +102,8 @@ textarea {
 .game-layout {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  flex: 1;
+  gap: 5px;
+  flex: 1 1 auto;
   min-height: 0;
 }
 
@@ -127,27 +111,28 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
+  flex: 0 0 auto;
 }
 
 .logo {
-  width: min(34vw, 126px);
+  width: min(24vw, 84px);
 }
 
 .game-title {
   margin: 0;
-  max-width: 260px;
+  max-width: 220px;
   text-align: center;
-  font-size: clamp(0.82rem, 2.8vw, 1rem);
-  line-height: 1.14;
-  font-weight: 600;
+  font-size: 0.72rem;
+  line-height: 1.04;
+  font-weight: 700;
 }
 
 .game-board {
   display: flex;
   justify-content: center;
   width: 100%;
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
 }
 
@@ -162,30 +147,28 @@ textarea {
 .shelf-frame {
   position: relative;
   width: 100%;
-  max-width: 320px;
-  padding: 8px 9px;
-  border-radius: 18px;
-  background:
-    linear-gradient(180deg, #bdbdbd 0%, #969696 100%);
+  max-width: 292px;
+  padding: 6px 7px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #bdbdbd 0%, #969696 100%);
   box-shadow:
-    inset 0 2px 4px rgba(255, 255, 255, 0.5),
-    inset 0 -3px 8px rgba(0, 0, 0, 0.18),
-    0 12px 24px rgba(0, 0, 0, 0.14);
+    inset 0 2px 4px rgba(255, 255, 255, 0.45),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.16),
+    0 10px 18px rgba(0, 0, 0, 0.12);
 }
 
 .shelf-frame::before,
 .shelf-frame::after {
   content: "";
   position: absolute;
-  top: 6px;
-  bottom: 6px;
-  width: 10px;
+  top: 5px;
+  bottom: 5px;
+  width: 9px;
   border-radius: 10px;
-  background:
-    linear-gradient(180deg, #6b6b6b 0%, #4d4d4d 50%, #7e7e7e 100%);
+  background: linear-gradient(180deg, #6b6b6b 0%, #4d4d4d 50%, #7e7e7e 100%);
   box-shadow:
-    inset 2px 0 2px rgba(255, 255, 255, 0.2),
-    inset -2px 0 3px rgba(0, 0, 0, 0.28);
+    inset 2px 0 2px rgba(255, 255, 255, 0.16),
+    inset -2px 0 3px rgba(0, 0, 0, 0.24);
   z-index: 0;
 }
 
@@ -201,9 +184,9 @@ textarea {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.95fr) minmax(0, 0.88fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr) minmax(0, 0.82fr);
   align-items: stretch;
-  column-gap: 4px;
+  column-gap: 3px;
   margin-bottom: var(--slot-gap);
 }
 
@@ -214,51 +197,48 @@ textarea {
 .shelf-slot {
   position: relative;
   min-height: var(--slot-height);
-  border-radius: 14px;
-  background:
-    linear-gradient(180deg, #fafafa 0%, #eeeeee 100%);
-  border: 2px solid rgba(36, 36, 36, 0.9);
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fafafa 0%, #eeeeee 100%);
+  border: 2px solid rgba(36, 36, 36, 0.88);
   box-shadow:
-    inset 0 8px 12px rgba(255, 255, 255, 0.65),
-    inset 0 -8px 12px rgba(0, 0, 0, 0.07),
-    0 3px 8px rgba(0, 0, 0, 0.06);
+    inset 0 6px 10px rgba(255, 255, 255, 0.62),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.06),
+    0 2px 6px rgba(0, 0, 0, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5px;
+  padding: 4px;
 }
 
 .shelf-slot::after {
   content: "";
   position: absolute;
-  left: -2px;
-  right: -2px;
-  bottom: -5px;
-  height: 8px;
-  border-radius: 0 0 10px 10px;
-  background:
-    linear-gradient(180deg, #6f6f6f 0%, #3f3f3f 100%);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.18);
+  left: -1px;
+  right: -1px;
+  bottom: -4px;
+  height: 6px;
+  border-radius: 0 0 8px 8px;
+  background: linear-gradient(180deg, #6f6f6f 0%, #3f3f3f 100%);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
 .shelf-slot.is-drop-target {
-  outline: 3px solid rgba(35, 116, 255, 0.28);
+  outline: 2px solid rgba(35, 116, 255, 0.32);
   outline-offset: 1px;
-  transform: scale(1.01);
 }
 
 .shelf-slot.is-correct {
   border-color: var(--success);
   box-shadow:
-    inset 0 8px 12px rgba(255, 255, 255, 0.65),
-    0 0 0 3px rgba(51, 168, 82, 0.18);
+    inset 0 6px 10px rgba(255, 255, 255, 0.62),
+    0 0 0 2px rgba(51, 168, 82, 0.16);
 }
 
 .shelf-slot.is-wrong {
   border-color: var(--error);
   box-shadow:
-    inset 0 8px 12px rgba(255, 255, 255, 0.65),
-    0 0 0 3px rgba(225, 74, 74, 0.18);
+    inset 0 6px 10px rgba(255, 255, 255, 0.62),
+    0 0 0 2px rgba(225, 74, 74, 0.16);
 }
 
 .price-strip,
@@ -270,7 +250,7 @@ textarea {
 }
 
 .tray-slot {
-  padding: 2px;
+  padding: 1px;
   position: relative;
   overflow: visible;
 }
@@ -278,29 +258,30 @@ textarea {
 .product-card {
   position: relative;
   width: 100%;
-  min-height: 72px;
-  border: 1.5px solid rgba(0, 0, 0, 0.08);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.11);
-  padding: 5px 4px;
+  min-height: 60px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.1);
+  padding: 4px 3px;
   display: flex;
   align-items: center;
   justify-content: center;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .product-card.is-drag-origin {
-  opacity: 0.35;
+  opacity: 0.32;
 }
 
 .product-card.is-dragging {
   pointer-events: none;
-  opacity: 0.9;
-  transform: scale(1.03);
-  box-shadow: 0 12px 22px rgba(0, 0, 0, 0.18);
+  opacity: 0.95;
+  transform: scale(1.02);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
   z-index: 9999;
 }
 
@@ -309,26 +290,26 @@ textarea {
 }
 
 .product-card img {
-  max-height: 58px;
+  max-height: 46px;
   width: auto;
   object-fit: contain;
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
+  backface-visibility: hidden;
 }
 
 .product-tooltip {
   position: absolute;
-  bottom: 100%;
+  bottom: calc(100% + 4px);
   right: 0;
-  transform: translateY(-4px);
-  max-width: 160px;
+  max-width: 140px;
   padding: 5px 7px;
   border-radius: 8px;
   background: #ffffff;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-  font-size: 0.68rem;
-  line-height: 1.2;
+  font-size: 0.62rem;
+  line-height: 1.18;
   color: #333;
   z-index: 50;
   white-space: normal;
@@ -338,7 +319,8 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
+  flex: 0 0 auto;
 }
 
 .turns,
@@ -348,40 +330,38 @@ textarea {
 }
 
 .turns {
-  font-size: 0.8rem;
+  font-size: 0.68rem;
   font-weight: 700;
+  line-height: 1.05;
 }
 
 .status-message {
-  max-width: 280px;
+  max-width: 245px;
   color: var(--muted);
-  font-size: 0.78rem;
-  line-height: 1.18;
+  font-size: 0.66rem;
+  line-height: 1.08;
 }
 
 .actions {
   display: flex;
   justify-content: center;
-  padding-top: 2px;
+  padding-top: 1px;
+  flex: 0 0 auto;
 }
 
 .submit-button {
-  min-width: 132px;
-  min-height: 42px;
-  padding: 9px 18px;
+  min-width: 108px;
+  min-height: 34px;
+  padding: 6px 12px;
   border: 0;
   border-radius: var(--radius-pill);
   background: linear-gradient(180deg, #ff6559 0%, #ff4f45 100%);
   color: #fff;
-  font-size: 0.98rem;
+  font-size: 0.84rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   text-transform: lowercase;
-  box-shadow: 0 8px 18px rgba(255, 90, 79, 0.26);
-}
-
-.submit-button:hover {
-  background: linear-gradient(180deg, #ff7267 0%, #ff564b 100%);
+  box-shadow: 0 6px 14px rgba(255, 90, 79, 0.24);
 }
 
 .submit-button:active {
@@ -390,25 +370,40 @@ textarea {
 
 .submit-button:focus-visible,
 .product-card:focus-visible {
-  outline: 3px solid var(--focus);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 
-@media (min-width: 390px) {
+@media (min-width: 390px) and (min-height: 760px) {
   :root {
-    --slot-height: 96px;
+    --slot-height: 82px;
+    --slot-gap: 6px;
+  }
+
+  .logo {
+    width: min(26vw, 92px);
+  }
+
+  .game-title {
+    font-size: 0.76rem;
   }
 
   .shelf-frame {
-    max-width: 336px;
+    max-width: 304px;
   }
 
   .product-card {
-    min-height: 76px;
+    min-height: 66px;
   }
 
   .product-card img {
-    max-height: 61px;
+    max-height: 50px;
+  }
+
+  .submit-button {
+    min-width: 118px;
+    min-height: 38px;
+    font-size: 0.9rem;
   }
 }
 
@@ -418,13 +413,10 @@ textarea {
     --slot-gap: 10px;
   }
 
-  body {
-    overflow: auto;
-  }
-
   .app-shell {
+    height: auto;
+    min-height: 100svh;
     padding: 14px 16px 20px;
-    min-height: auto;
     overflow: visible;
   }
 
@@ -444,6 +436,7 @@ textarea {
   .game-title {
     max-width: 340px;
     font-size: clamp(0.95rem, 2.8vw, 1.2rem);
+    line-height: 1.15;
   }
 
   .shelf-frame {
@@ -455,10 +448,23 @@ textarea {
   .shelf-frame::before,
   .shelf-frame::after {
     width: 12px;
+    top: 7px;
+    bottom: 7px;
   }
 
   .shelf-row {
     column-gap: 6px;
+  }
+
+  .shelf-slot {
+    border-radius: 16px;
+    border-width: 2px;
+    padding: 6px;
+  }
+
+  .shelf-slot::after {
+    bottom: -6px;
+    height: 10px;
   }
 
   .product-card {
@@ -471,6 +477,11 @@ textarea {
     max-height: 68px;
   }
 
+  .product-tooltip {
+    max-width: 190px;
+    font-size: 0.72rem;
+  }
+
   .turns {
     font-size: 0.92rem;
   }
@@ -478,7 +489,7 @@ textarea {
   .status-message {
     max-width: 360px;
     font-size: 0.9rem;
-    line-height: 1.28;
+    line-height: 1.24;
   }
 
   .submit-button {
@@ -510,6 +521,7 @@ textarea {
   .game-title {
     max-width: 520px;
     font-size: clamp(1.1rem, 2.4vw, 1.7rem);
+    line-height: 1.2;
   }
 
   .shelf-frame {
@@ -555,7 +567,7 @@ textarea {
     border-radius: 18px;
     padding: 8px 6px;
     border-width: 2px;
-    box-shadow: var(--shadow-card);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
   }
 
   .product-card img {
@@ -579,83 +591,9 @@ textarea {
   }
 }
 
-@media (max-height: 760px) and (max-width: 539px) {
-  :root {
-    --slot-height: 84px;
-    --slot-gap: 6px;
-  }
-
-  .app-shell {
-    padding: 4px 8px 8px;
-  }
-
-  .topbar {
-    min-height: 20px;
-    margin-bottom: 1px;
-  }
-
-  .game-layout {
-    gap: 6px;
-  }
-
-  .logo {
-    width: min(30vw, 108px);
-  }
-
-  .game-title {
-    max-width: 240px;
-    font-size: 0.76rem;
-    line-height: 1.08;
-  }
-
-  .shelf-frame {
-    max-width: 304px;
-    padding: 7px 8px;
-  }
-
-  .shelf-row {
-    column-gap: 3px;
-  }
-
-  .shelf-slot {
-    padding: 4px;
-  }
-
-  .price-strip,
-  .tray-slot {
-    min-height: var(--slot-height);
-  }
-
-  .product-card {
-    min-height: 66px;
-    border-radius: 12px;
-    padding: 4px 3px;
-  }
-
-  .product-card img {
-    max-height: 52px;
-  }
-
-  .product-tooltip {
-    max-width: 140px;
-    font-size: 0.62rem;
-  }
-
-  .turns {
-    font-size: 0.74rem;
-  }
-
-  .status-message {
-    max-width: 250px;
-    font-size: 0.72rem;
-    line-height: 1.12;
-  }
-
-  .submit-button {
-    min-width: 118px;
-    min-height: 38px;
-    padding: 7px 14px;
-    font-size: 0.9rem;
+@media (hover: none) and (pointer: coarse) {
+  .submit-button:hover {
+    background: linear-gradient(180deg, #ff6559 0%, #ff4f45 100%);
   }
 }
 
