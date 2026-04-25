@@ -563,7 +563,7 @@ function handleSubmit() {
 
   state.attempt += 1;
   turnsEl.textContent = `Turn ${state.attempt} of ${state.maxAttempts}`;
-  statusEl.textContent = `${correctCount} of ${state.items.length} correct. Green items are locked. Move the red ones and submit again.`;
+  statusEl.textContent = `${correctCount} of ${state.items.length} correct.`;
 
   renderTray();
   renderSlots();

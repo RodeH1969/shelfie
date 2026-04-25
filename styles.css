@@ -10,7 +10,7 @@
 
   --radius-pill: 999px;
 
-  --slot-height: 62px;
+  --slot-height: 58px;
   --slot-gap: 3px;
   --app-max: 980px;
 
@@ -78,7 +78,7 @@ textarea {
   height: 100svh;
   height: 100dvh;
   margin: 0 auto;
-  padding: 4px 7px 7px;
+  padding: 4px 7px 6px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -95,7 +95,7 @@ textarea {
 
 .game-date {
   margin: 0;
-  font-size: 0.64rem;
+  font-size: 0.62rem;
   line-height: 1;
   color: #8b4f71;
   font-weight: 700;
@@ -105,7 +105,7 @@ textarea {
 .game-layout {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
   flex: 1 1 auto;
   min-height: 0;
 }
@@ -116,13 +116,13 @@ textarea {
   align-items: center;
   gap: 0;
   margin-top: 0;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
   flex: 0 0 auto;
 }
 
 .logo {
-  width: min(56vw, 230px);
-  max-width: 230px;
+  width: min(52vw, 210px);
+  max-width: 210px;
   height: auto;
 }
 
@@ -256,7 +256,7 @@ textarea {
 .product-card {
   position: relative;
   width: 100%;
-  min-height: 54px;
+  min-height: 50px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.96);
@@ -288,7 +288,7 @@ textarea {
 }
 
 .product-card img {
-  max-height: 39px;
+  max-height: 35px;
   width: auto;
   object-fit: contain;
   pointer-events: none;
@@ -317,8 +317,9 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 1px;
   flex: 0 0 auto;
+  margin-top: -1px;
 }
 
 .turns,
@@ -328,16 +329,16 @@ textarea {
 }
 
 .turns {
-  font-size: 0.76rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1.02;
 }
 
 .status-message {
-  max-width: 260px;
+  max-width: 250px;
   color: var(--muted);
-  font-size: 0.72rem;
-  line-height: 1.18;
+  font-size: 0.66rem;
+  line-height: 1.08;
 }
 
 .actions {
@@ -371,8 +372,6 @@ textarea {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
-
-/* image popup */
 
 .image-viewer[hidden] {
   display: none;
@@ -447,13 +446,13 @@ textarea {
 
 @media (min-width: 390px) and (min-height: 760px) {
   :root {
-    --slot-height: 68px;
+    --slot-height: 64px;
     --slot-gap: 4px;
   }
 
   .logo {
-    width: min(60vw, 260px);
-    max-width: 260px;
+    width: min(56vw, 230px);
+    max-width: 230px;
   }
 
   .shelf-frame {
@@ -461,11 +460,11 @@ textarea {
   }
 
   .product-card {
-    min-height: 58px;
+    min-height: 54px;
   }
 
   .product-card img {
-    max-height: 42px;
+    max-height: 38px;
   }
 
   .submit-button {
