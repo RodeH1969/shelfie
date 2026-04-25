@@ -66,6 +66,8 @@ textarea {
   font: inherit;
 }
 
+/* ACCESSIBILITY: SKIP LINK */
+
 .skip-link {
   position: absolute;
   left: -9999px;
@@ -82,6 +84,8 @@ textarea {
   border-radius: 10px;
   outline: 2px solid var(--focus);
 }
+
+/* APP LAYOUT */
 
 .app-shell {
   width: 100%;
@@ -132,6 +136,8 @@ textarea {
   line-height: 1.28;
   font-weight: 500;
 }
+
+/* BOARD / SHELF */
 
 .game-board {
   display: flex;
@@ -186,7 +192,8 @@ textarea {
   right: 6px;
 }
 
-/* each row: shelf slot + price strip + tray slot */
+/* ROWS: shelf slot + price strip + tray slot */
+
 .shelf-row {
   position: relative;
   z-index: 1;
@@ -200,6 +207,8 @@ textarea {
 .shelf-row:last-child {
   margin-bottom: 0;
 }
+
+/* SHELF SLOT */
 
 .shelf-slot {
   position: relative;
@@ -219,6 +228,7 @@ textarea {
 }
 
 /* shelf lip */
+
 .shelf-slot::after {
   content: "";
   position: absolute;
@@ -252,7 +262,8 @@ textarea {
     0 0 0 4px rgba(225, 74, 74, 0.18);
 }
 
-/* default empty price strip/tray slot */
+/* PRICE STRIP & TRAY */
+
 .price-strip,
 .tray-slot {
   min-height: var(--slot-height);
@@ -262,13 +273,15 @@ textarea {
 }
 
 /* tray slots should not look like shelves */
+
 .tray-slot {
   padding: 4px;
-  position: relative;          /* so tooltip can sit above */
+  position: relative;
   overflow: visible;
 }
 
-/* cards */
+/* PRODUCT CARDS */
+
 .product-card {
   position: relative;
   width: 100%;
@@ -286,15 +299,24 @@ textarea {
   -webkit-user-select: none;
 }
 
-.product-card.is-locked {
-  opacity: 0.65;
+/* origin card while dragging */
+
+.product-card.is-drag-origin {
+  opacity: 0.35;
 }
 
+/* ghost drag card */
+
 .product-card.is-dragging {
-  opacity: 0.85;
+  pointer-events: none;
+  opacity: 0.9;
   transform: scale(1.04);
   box-shadow: 0 16px 28px rgba(0, 0, 0, 0.18);
-  z-index: 20;
+  z-index: 9999;
+}
+
+.product-card.is-locked {
+  opacity: 0.65;
 }
 
 .product-card img {
@@ -302,9 +324,12 @@ textarea {
   width: auto;
   object-fit: contain;
   pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-/* tooltip for tray cards (name only, no price) */
+/* TRAY TOOLTIP */
+
 .product-tooltip {
   position: absolute;
   bottom: 100%;
@@ -322,7 +347,8 @@ textarea {
   white-space: normal;
 }
 
-/* feedback & actions */
+/* FEEDBACK & ACTIONS */
+
 .feedback-panel {
   display: flex;
   flex-direction: column;
@@ -383,7 +409,8 @@ textarea {
   outline-offset: 3px;
 }
 
-/* wider screens */
+/* RESPONSIVE */
+
 @media (min-width: 540px) {
   .app-shell {
     padding: 16px 18px 36px;
@@ -440,6 +467,8 @@ textarea {
     max-width: 420px;
   }
 }
+
+/* REDUCED MOTION */
 
 @media (prefers-reduced-motion: reduce) {
   *,

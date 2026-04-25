@@ -1,11 +1,7 @@
 const gameDateEl = document.getElementById("game-date");
 const slotEls = Array.from(document.querySelectorAll(".shelf-slot"));
-const priceStripEls = Array.from(
-  document.querySelectorAll(".price-strip")
-);
-const traySlotEls = Array.from(
-  document.querySelectorAll(".tray-slot")
-);
+const priceStripEls = Array.from(document.querySelectorAll(".price-strip"));
+const traySlotEls = Array.from(document.querySelectorAll(".tray-slot"));
 const turnsEl = document.getElementById("turns");
 const statusEl = document.getElementById("status-message");
 const submitButton = document.getElementById("submit-button");
@@ -16,7 +12,6 @@ const state = {
   puzzleDate: "",
   puzzleLabel: "",
   items: [],
-  // slots[index] = item or null, where index is shelf row (0–6)
   slots: new Array(7).fill(null),
   lockedIds: new Set(),
   history: [],
@@ -29,10 +24,10 @@ async function init() {
   try {
     const today = getBrisbaneDateString();
     const schedule = await loadSchedule();
+
     if (!schedule.includes(today)) {
       gameDateEl.textContent = "Game: Coming soon";
-      statusEl.textContent =
-        "No Shelfie puzzle is scheduled for today yet.";
+      statusEl.textContent = "No Shelfie puzzle is scheduled for today yet.";
       submitButton.disabled = true;
       return;
     }
@@ -40,13 +35,13 @@ async function init() {
     const puzzleText = await fetch(`./data/${today}.txt`)
       .then(assertOk)
       .then(r => r.text());
+
     const puzzle = parsePuzzleText(puzzleText);
 
     state.puzzleDate = puzzle.date;
     state.puzzleLabel = puzzle.label;
     state.maxAttempts = Number(puzzle.maxAttempts) || 6;
 
-    // items have fixed homeRow 0–6 for tray alignment
     state.items = puzzle.items.map((item, index) => ({
       id: `${slugify(item.name)}-${index}`,
       name: item.name,
@@ -60,8 +55,7 @@ async function init() {
 
     gameDateEl.textContent = `Game: ${state.puzzleLabel}`;
     turnsEl.textContent = `Turn ${state.attempt} of ${state.maxAttempts}`;
-    statusEl.textContent =
-      "Drag all 7 items onto the shelf, then press submit.";
+    statusEl.textContent = "Drag all 7 items onto the shelf, then press submit.";
 
     clearAllPriceStrips();
     renderTray();
@@ -79,6 +73,7 @@ async function loadSchedule() {
   const text = await fetch("./data/schedule.txt")
     .then(assertOk)
     .then(r => r.text());
+
   return text
     .split(/\r?\n/)
     .map(line => line.trim())
@@ -149,10 +144,6 @@ function clearAllPriceStrips() {
   });
 }
 
-/**
- * TRAY RENDERING
- * Each tray-row shows its "homeRow" item if that item is NOT locked and NOT currently on the shelf.
- */
 function renderTray() {
   traySlotEls.forEach((trayEl, row) => {
     trayEl.innerHTML = "";
@@ -161,49 +152,36 @@ function renderTray() {
     const item = state.items[row];
     if (!item) return;
 
-    const onShelfIndex = state.slots.findIndex(
-      s => s && s.id === item.id
-    );
+    const onShelfIndex = state.slots.findIndex(s => s && s.id === item.id);
     const isLocked = state.lockedIds.has(item.id);
 
     if (onShelfIndex !== -1 || isLocked) {
-      // This row's item is on shelf or locked => tray row empty
       return;
     }
 
-    const card = createCard(item, /* inTray */ true);
+    const card = createCard(item, true);
     trayEl.appendChild(card);
   });
 }
 
-/**
- * SHELF RENDERING
- */
 function renderSlots() {
   slotEls.forEach((slotEl, index) => {
     slotEl.innerHTML = "";
-    slotEl.classList.remove(
-      "is-correct",
-      "is-wrong",
-      "is-drop-target"
-    );
+    slotEl.classList.remove("is-correct", "is-wrong", "is-drop-target");
 
     const item = state.slots[index];
     if (!item) return;
 
-    const card = createCard(item, /* inTray */ false);
+    const card = createCard(item, false);
     if (state.lockedIds.has(item.id)) {
       card.classList.add("is-locked");
       card.disabled = true;
     }
+
     slotEl.appendChild(card);
   });
 }
 
-/**
- * CARD CREATION
- * inTray = true => hover tooltip with name
- */
 function createCard(item, inTray) {
   const button = document.createElement("button");
   button.type = "button";
@@ -224,21 +202,12 @@ function createCard(item, inTray) {
     button.disabled = true;
   }
 
-  // Tray-only name tooltip (no price)
   if (inTray) {
-    button.title = item.name; // native fallback
-    button.addEventListener("mouseenter", () =>
-      showNameTooltip(button, item)
-    );
-    button.addEventListener("mouseleave", () =>
-      hideNameTooltip(button)
-    );
-    button.addEventListener("focus", () =>
-      showNameTooltip(button, item)
-    );
-    button.addEventListener("blur", () =>
-      hideNameTooltip(button)
-    );
+    button.title = item.name;
+    button.addEventListener("mouseenter", () => showNameTooltip(button, item));
+    button.addEventListener("mouseleave", () => hideNameTooltip(button));
+    button.addEventListener("focus", () => showNameTooltip(button, item));
+    button.addEventListener("blur", () => hideNameTooltip(button));
   }
 
   return button;
@@ -248,6 +217,7 @@ function showNameTooltip(button, item) {
   hideNameTooltip(button);
   const wrapper = button.closest(".tray-slot");
   if (!wrapper) return;
+
   const tip = document.createElement("div");
   tip.className = "product-tooltip";
   tip.textContent = item.name;
@@ -257,66 +227,82 @@ function showNameTooltip(button, item) {
 function hideNameTooltip(button) {
   const wrapper = button.closest(".tray-slot");
   if (!wrapper) return;
+
   const tip = wrapper.querySelector(".product-tooltip");
   if (tip) tip.remove();
 }
 
-/**
- * POINTER DRAG
- * Keeps track of:
- * - startLocation: "tray" or "shelf"
- * - startShelfIndex: if started on shelf
- */
 function attachPointerDrag(element, item) {
   let pointerId = null;
-  let startX = 0;
-  let startY = 0;
+  let startLocation = null;
+  let startShelfIndex = -1;
+  let ghost = null;
+  let shiftX = 0;
+  let shiftY = 0;
+  let currentX = 0;
+  let currentY = 0;
   let dragging = false;
 
-  // Where the drag began
-  let startLocation = null; // "tray" or "shelf"
-  let startShelfIndex = -1;
-
-  element.style.position = "relative";
+  element.style.touchAction = "none";
 
   element.addEventListener("pointerdown", event => {
     if (state.lockedIds.has(item.id)) return;
+    if (event.button !== undefined && event.button !== 0) return;
+
+    const rect = element.getBoundingClientRect();
 
     pointerId = event.pointerId;
     dragging = true;
     state.draggingId = item.id;
-    startX = event.clientX;
-    startY = event.clientY;
 
-    // Figure out if this card started in tray or shelf
+    currentX = event.clientX;
+    currentY = event.clientY;
+    shiftX = event.clientX - rect.left;
+    shiftY = event.clientY - rect.top;
+
     const trayWrapper = element.closest(".tray-slot");
     if (trayWrapper) {
       startLocation = "tray";
       startShelfIndex = -1;
     } else {
-      const shelfIndex = state.slots.findIndex(
-        s => s && s.id === item.id
-      );
       startLocation = "shelf";
-      startShelfIndex = shelfIndex;
+      startShelfIndex = state.slots.findIndex(s => s && s.id === item.id);
     }
 
-    element.setPointerCapture(pointerId);
-    element.classList.add("is-dragging");
+    ghost = element.cloneNode(true);
+    ghost.classList.add("is-dragging");
+    ghost.style.position = "fixed";
+    ghost.style.left = `${rect.left}px`;
+    ghost.style.top = `${rect.top}px`;
+    ghost.style.width = `${rect.width}px`;
+    ghost.style.height = `${rect.height}px`;
+    ghost.style.margin = "0";
+    ghost.style.pointerEvents = "none";
+    ghost.style.zIndex = "9999";
+    ghost.style.transform = "none";
+    document.body.appendChild(ghost);
+
+    element.classList.add("is-drag-origin");
     hideNameTooltip(element);
+
+    element.setPointerCapture(pointerId);
+    highlightSlotAt(currentX, currentY);
+
+    event.preventDefault();
   });
 
   element.addEventListener("pointermove", event => {
     if (!dragging || event.pointerId !== pointerId) return;
 
-    const dx = event.clientX - startX;
-    const dy = event.clientY - startY;
-    element.style.transform = `translate(${dx}px, ${dy}px)`;
+    currentX = event.clientX;
+    currentY = event.clientY;
 
-    const rect = element.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    highlightSlotAt(centerX, centerY);
+    if (ghost) {
+      ghost.style.left = `${currentX - shiftX}px`;
+      ghost.style.top = `${currentY - shiftY}px`;
+    }
+
+    highlightSlotAt(currentX, currentY);
   });
 
   const finish = event => {
@@ -324,62 +310,19 @@ function attachPointerDrag(element, item) {
 
     dragging = false;
     state.draggingId = null;
+
+    const dropIndex = getSlotIndexFromPoint(currentX, currentY);
+
     clearSlotHighlights();
 
-    element.classList.remove("is-dragging");
-    element.style.transform = "";
-
-    const rect = element.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const dropIndex = getSlotIndexFromPoint(centerX, centerY);
-
-    // If we dropped on a shelf row:
-    if (dropIndex !== -1) {
-      // Make room if needed (swap out non-locked item)
-      const occupyingItem = state.slots[dropIndex];
-      if (
-        occupyingItem &&
-        !state.lockedIds.has(occupyingItem.id)
-      ) {
-        // If drag started on shelf somewhere else, put the occupying item back there.
-        if (startLocation === "shelf" && startShelfIndex !== -1) {
-          state.slots[startShelfIndex] = occupyingItem;
-        } else {
-          // Otherwise occupying item returns to its tray row (we simply remove it from shelf)
-          const occIndex = state.slots.findIndex(
-            s => s && s.id === occupyingItem.id
-          );
-          if (occIndex !== -1) {
-            state.slots[occIndex] = null;
-          }
-        }
-      }
-
-      // Remove this item from any shelf row it previously occupied
-      const prevIndex = state.slots.findIndex(
-        s => s && s.id === item.id
-      );
-      if (prevIndex !== -1) {
-        state.slots[prevIndex] = null;
-      }
-
-      // Place item into new shelf row
-      state.slots[dropIndex] = item;
-    } else {
-      // Not dropped on shelf: return to original place
-      if (startLocation === "shelf" && startShelfIndex !== -1) {
-        state.slots[startShelfIndex] = item;
-      } else {
-        // started in tray => ensure it's not left in any shelf row
-        const prevIndex = state.slots.findIndex(
-          s => s && s.id === item.id
-        );
-        if (prevIndex !== -1) {
-          state.slots[prevIndex] = null;
-        }
-      }
+    if (ghost) {
+      ghost.remove();
+      ghost = null;
     }
+
+    element.classList.remove("is-drag-origin");
+
+    moveItem(item, startLocation, startShelfIndex, dropIndex);
 
     if (element.hasPointerCapture(pointerId)) {
       element.releasePointerCapture(pointerId);
@@ -390,32 +333,75 @@ function attachPointerDrag(element, item) {
     updateSubmitState();
 
     pointerId = null;
+    startLocation = null;
+    startShelfIndex = -1;
   };
 
   element.addEventListener("pointerup", finish);
   element.addEventListener("pointercancel", finish);
 }
 
-/**
- * DROP TARGET HELPERS
- */
+function moveItem(item, startLocation, startShelfIndex, dropIndex) {
+  const prevIndex = state.slots.findIndex(s => s && s.id === item.id);
+
+  if (dropIndex === -1) {
+    if (prevIndex !== -1) {
+      state.slots[prevIndex] = null;
+    }
+
+    if (startLocation === "shelf" && startShelfIndex !== -1) {
+      state.slots[startShelfIndex] = item;
+    }
+
+    return;
+  }
+
+  const occupyingItem = state.slots[dropIndex];
+
+  if (prevIndex !== -1) {
+    state.slots[prevIndex] = null;
+  }
+
+  if (
+    occupyingItem &&
+    occupyingItem.id !== item.id &&
+    !state.lockedIds.has(occupyingItem.id)
+  ) {
+    if (
+      startLocation === "shelf" &&
+      startShelfIndex !== -1 &&
+      startShelfIndex !== dropIndex
+    ) {
+      state.slots[startShelfIndex] = occupyingItem;
+    }
+  }
+
+  state.slots[dropIndex] = item;
+}
+
 function highlightSlotAt(x, y) {
   clearSlotHighlights();
   const index = getSlotIndexFromPoint(x, y);
-  if (index > -1) {
+  if (index !== -1) {
     slotEls[index].classList.add("is-drop-target");
   }
 }
 
 function clearSlotHighlights() {
-  slotEls.forEach(slot =>
-    slot.classList.remove("is-drop-target")
-  );
+  slotEls.forEach(slot => slot.classList.remove("is-drop-target"));
 }
 
 function getSlotIndexFromPoint(x, y) {
-  return slotEls.findIndex(slot => {
-    const rect = slot.getBoundingClientRect();
+  const el = document.elementFromPoint(x, y);
+  if (!el) return -1;
+
+  const slot = el.closest(".shelf-slot");
+  if (slot) {
+    return slotEls.indexOf(slot);
+  }
+
+  return slotEls.findIndex(slotEl => {
+    const rect = slotEl.getBoundingClientRect();
     return (
       x >= rect.left &&
       x <= rect.right &&
@@ -425,9 +411,6 @@ function getSlotIndexFromPoint(x, y) {
   });
 }
 
-/**
- * SUBMIT / GAME LOGIC
- */
 function wireSubmit() {
   submitButton.textContent = "submit";
   submitButton.disabled = true;
@@ -441,14 +424,11 @@ function updateSubmitState() {
 
 function handleSubmit() {
   if (!state.slots.every(Boolean)) {
-    statusEl.textContent =
-      "Drag all 7 items onto the shelf before submitting.";
+    statusEl.textContent = "Drag all 7 items onto the shelf before submitting.";
     return;
   }
 
-  const correctOrder = [...state.items].sort(
-    (a, b) => b.price - a.price
-  );
+  const correctOrder = [...state.items].sort((a, b) => b.price - a.price);
   const rowResult = [];
   let correctCount = 0;
 
@@ -475,7 +455,6 @@ function handleSubmit() {
       showPriceStrip(index, item);
     } else {
       rowResult.push("🟥");
-      // wrong slots cleared; their items will show back in tray rows
       state.slots[index] = null;
     }
   });
@@ -517,9 +496,6 @@ function handleSubmit() {
   updateSubmitState();
 }
 
-/**
- * PRICE STRIP FOR CORRECT ITEMS
- */
 function showPriceStrip(index, item) {
   const strip = priceStripEls[index];
   if (!strip) return;
@@ -532,10 +508,8 @@ function showPriceStrip(index, item) {
   strip.style.padding = "6px 8px";
   strip.style.marginLeft = "6px";
   strip.style.borderRadius = "12px";
-  strip.style.background =
-    "linear-gradient(180deg, #ffffff 0%, #f6fff9 100%)";
-  strip.style.boxShadow =
-    "0 3px 8px rgba(0, 0, 0, 0.14)";
+  strip.style.background = "linear-gradient(180deg, #ffffff 0%, #f6fff9 100%)";
+  strip.style.boxShadow = "0 3px 8px rgba(0, 0, 0, 0.14)";
   strip.style.minWidth = "120px";
 
   const nameEl = document.createElement("div");
@@ -561,18 +535,13 @@ function showPriceStrip(index, item) {
   strip.appendChild(priceEl);
 }
 
-/**
- * SHARE STRING
- */
 async function shareResults() {
   const solved = state.lockedIds.size === state.items.length;
   const headline = solved
     ? `Shelfie ${state.puzzleDate} ${state.history.length}/${state.maxAttempts}`
     : `Shelfie ${state.puzzleDate} X/${state.maxAttempts}`;
 
-  const text = [headline, ...state.history, window.location.href].join(
-    "\n"
-  );
+  const text = [headline, ...state.history, window.location.href].join("\n");
 
   try {
     if (navigator.share) {
@@ -597,9 +566,6 @@ async function shareResults() {
   }
 }
 
-/**
- * UTILITIES
- */
 function getBrisbaneDateString() {
   const formatter = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Australia/Brisbane",
