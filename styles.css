@@ -1,6 +1,5 @@
 :root {
   --bg: #f2f2f2;
-  --panel: #ffffff;
   --text: #1e1e1e;
   --muted: #6c6c6c;
 
@@ -11,8 +10,8 @@
 
   --radius-pill: 999px;
 
-  --slot-height: 76px;
-  --slot-gap: 5px;
+  --slot-height: 67px;
+  --slot-gap: 4px;
   --app-max: 980px;
 
   --font-main: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
@@ -37,6 +36,10 @@ body {
   font-family: var(--font-main);
   background: radial-gradient(circle at top, #fafafa 0%, #f2f2f2 50%, #ececec 100%);
   color: var(--text);
+}
+
+body.viewer-open {
+  overflow: hidden;
 }
 
 img {
@@ -75,7 +78,7 @@ textarea {
   height: 100svh;
   height: 100dvh;
   margin: 0 auto;
-  padding: 4px 8px 8px;
+  padding: 4px 7px 7px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -85,15 +88,15 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 18px;
+  min-height: 16px;
   margin-bottom: 1px;
   flex: 0 0 auto;
 }
 
 .game-date {
   margin: 0;
-  font-size: 0.72rem;
-  line-height: 1.05;
+  font-size: 0.68rem;
+  line-height: 1.02;
   color: #8b4f71;
   font-weight: 700;
   text-align: center;
@@ -102,7 +105,7 @@ textarea {
 .game-layout {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
   flex: 1 1 auto;
   min-height: 0;
 }
@@ -116,15 +119,15 @@ textarea {
 }
 
 .logo {
-  width: min(24vw, 84px);
+  width: min(20vw, 72px);
 }
 
 .game-title {
   margin: 0;
-  max-width: 220px;
+  max-width: 210px;
   text-align: center;
-  font-size: 0.72rem;
-  line-height: 1.04;
+  font-size: 0.66rem;
+  line-height: 1.02;
   font-weight: 700;
 }
 
@@ -147,28 +150,28 @@ textarea {
 .shelf-frame {
   position: relative;
   width: 100%;
-  max-width: 292px;
-  padding: 6px 7px;
-  border-radius: 16px;
+  max-width: 272px;
+  padding: 5px 6px;
+  border-radius: 14px;
   background: linear-gradient(180deg, #bdbdbd 0%, #969696 100%);
   box-shadow:
-    inset 0 2px 4px rgba(255, 255, 255, 0.45),
-    inset 0 -3px 8px rgba(0, 0, 0, 0.16),
-    0 10px 18px rgba(0, 0, 0, 0.12);
+    inset 0 1px 3px rgba(255, 255, 255, 0.4),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.14),
+    0 8px 14px rgba(0, 0, 0, 0.1);
 }
 
 .shelf-frame::before,
 .shelf-frame::after {
   content: "";
   position: absolute;
-  top: 5px;
-  bottom: 5px;
-  width: 9px;
-  border-radius: 10px;
+  top: 4px;
+  bottom: 4px;
+  width: 8px;
+  border-radius: 8px;
   background: linear-gradient(180deg, #6b6b6b 0%, #4d4d4d 50%, #7e7e7e 100%);
   box-shadow:
-    inset 2px 0 2px rgba(255, 255, 255, 0.16),
-    inset -2px 0 3px rgba(0, 0, 0, 0.24);
+    inset 1px 0 2px rgba(255, 255, 255, 0.14),
+    inset -1px 0 2px rgba(0, 0, 0, 0.22);
   z-index: 0;
 }
 
@@ -184,9 +187,9 @@ textarea {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.9fr) minmax(0, 0.82fr);
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.78fr) minmax(0, 0.72fr);
   align-items: stretch;
-  column-gap: 3px;
+  column-gap: 2px;
   margin-bottom: var(--slot-gap);
 }
 
@@ -197,17 +200,17 @@ textarea {
 .shelf-slot {
   position: relative;
   min-height: var(--slot-height);
-  border-radius: 12px;
+  border-radius: 10px;
   background: linear-gradient(180deg, #fafafa 0%, #eeeeee 100%);
-  border: 2px solid rgba(36, 36, 36, 0.88);
+  border: 2px solid rgba(36, 36, 36, 0.86);
   box-shadow:
-    inset 0 6px 10px rgba(255, 255, 255, 0.62),
-    inset 0 -6px 10px rgba(0, 0, 0, 0.06),
-    0 2px 6px rgba(0, 0, 0, 0.05);
+    inset 0 5px 8px rgba(255, 255, 255, 0.58),
+    inset 0 -5px 8px rgba(0, 0, 0, 0.05),
+    0 2px 4px rgba(0, 0, 0, 0.04);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px;
+  padding: 3px;
 }
 
 .shelf-slot::after {
@@ -215,9 +218,9 @@ textarea {
   position: absolute;
   left: -1px;
   right: -1px;
-  bottom: -4px;
-  height: 6px;
-  border-radius: 0 0 8px 8px;
+  bottom: -3px;
+  height: 5px;
+  border-radius: 0 0 6px 6px;
   background: linear-gradient(180deg, #6f6f6f 0%, #3f3f3f 100%);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 }
@@ -230,15 +233,15 @@ textarea {
 .shelf-slot.is-correct {
   border-color: var(--success);
   box-shadow:
-    inset 0 6px 10px rgba(255, 255, 255, 0.62),
-    0 0 0 2px rgba(51, 168, 82, 0.16);
+    inset 0 5px 8px rgba(255, 255, 255, 0.58),
+    0 0 0 2px rgba(51, 168, 82, 0.14);
 }
 
 .shelf-slot.is-wrong {
   border-color: var(--error);
   box-shadow:
-    inset 0 6px 10px rgba(255, 255, 255, 0.62),
-    0 0 0 2px rgba(225, 74, 74, 0.16);
+    inset 0 5px 8px rgba(255, 255, 255, 0.58),
+    0 0 0 2px rgba(225, 74, 74, 0.14);
 }
 
 .price-strip,
@@ -258,12 +261,12 @@ textarea {
 .product-card {
   position: relative;
   width: 100%;
-  min-height: 60px;
+  min-height: 54px;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.1);
-  padding: 4px 3px;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.09);
+  padding: 3px 2px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -290,7 +293,7 @@ textarea {
 }
 
 .product-card img {
-  max-height: 46px;
+  max-height: 39px;
   width: auto;
   object-fit: contain;
   pointer-events: none;
@@ -303,13 +306,13 @@ textarea {
   position: absolute;
   bottom: calc(100% + 4px);
   right: 0;
-  max-width: 140px;
-  padding: 5px 7px;
+  max-width: 130px;
+  padding: 4px 6px;
   border-radius: 8px;
   background: #ffffff;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
-  font-size: 0.62rem;
-  line-height: 1.18;
+  font-size: 0.58rem;
+  line-height: 1.15;
   color: #333;
   z-index: 50;
   white-space: normal;
@@ -319,7 +322,7 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   flex: 0 0 auto;
 }
 
@@ -330,16 +333,16 @@ textarea {
 }
 
 .turns {
-  font-size: 0.68rem;
+  font-size: 0.62rem;
   font-weight: 700;
-  line-height: 1.05;
+  line-height: 1;
 }
 
 .status-message {
-  max-width: 245px;
+  max-width: 230px;
   color: var(--muted);
-  font-size: 0.66rem;
-  line-height: 1.08;
+  font-size: 0.6rem;
+  line-height: 1.04;
 }
 
 .actions {
@@ -350,18 +353,18 @@ textarea {
 }
 
 .submit-button {
-  min-width: 108px;
-  min-height: 34px;
-  padding: 6px 12px;
+  min-width: 96px;
+  min-height: 30px;
+  padding: 5px 10px;
   border: 0;
   border-radius: var(--radius-pill);
   background: linear-gradient(180deg, #ff6559 0%, #ff4f45 100%);
   color: #fff;
-  font-size: 0.84rem;
+  font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.02em;
   text-transform: lowercase;
-  box-shadow: 0 6px 14px rgba(255, 90, 79, 0.24);
+  box-shadow: 0 5px 12px rgba(255, 90, 79, 0.22);
 }
 
 .submit-button:active {
@@ -374,36 +377,109 @@ textarea {
   outline-offset: 2px;
 }
 
+/* image popup */
+
+.image-viewer[hidden] {
+  display: none;
+}
+
+.image-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+}
+
+.image-viewer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.68);
+}
+
+.image-viewer-dialog {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(88vw, 360px);
+  max-height: 82svh;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 16px;
+  padding: 14px 12px 12px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-viewer-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.06);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #222;
+}
+
+.image-viewer-img {
+  max-width: 100%;
+  max-height: 52svh;
+  object-fit: contain;
+  margin-top: 10px;
+}
+
+.image-viewer-meta {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.image-viewer-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.image-viewer-store {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #666;
+  line-height: 1.2;
+}
+
 @media (min-width: 390px) and (min-height: 760px) {
   :root {
-    --slot-height: 82px;
-    --slot-gap: 6px;
+    --slot-height: 72px;
+    --slot-gap: 5px;
   }
 
   .logo {
-    width: min(26vw, 92px);
+    width: min(21vw, 76px);
   }
 
   .game-title {
-    font-size: 0.76rem;
+    font-size: 0.7rem;
   }
 
   .shelf-frame {
-    max-width: 304px;
+    max-width: 282px;
   }
 
   .product-card {
-    min-height: 66px;
+    min-height: 58px;
   }
 
   .product-card img {
-    max-height: 50px;
+    max-height: 42px;
   }
 
   .submit-button {
-    min-width: 118px;
-    min-height: 38px;
-    font-size: 0.9rem;
+    min-width: 104px;
+    min-height: 32px;
+    font-size: 0.8rem;
   }
 }
 
@@ -454,6 +530,7 @@ textarea {
 
   .shelf-row {
     column-gap: 6px;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.95fr) minmax(0, 0.88fr);
   }
 
   .shelf-slot {
@@ -497,6 +574,14 @@ textarea {
     min-height: 52px;
     padding: 12px 24px;
     font-size: 1.1rem;
+  }
+
+  .image-viewer-dialog {
+    width: min(78vw, 460px);
+  }
+
+  .image-viewer-img {
+    max-height: 58svh;
   }
 }
 

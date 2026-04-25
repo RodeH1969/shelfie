@@ -64,6 +64,7 @@ async function init() {
     statusEl.textContent = "Drag all 7 items onto the shelf, then press submit.";
 
     clearAllPriceStrips();
+    ensureImageViewer();
     renderTray();
     renderSlots();
     wireSubmit();
@@ -203,7 +204,7 @@ function createCard(item, inTray) {
   button.appendChild(img);
 
   if (!state.lockedIds.has(item.id)) {
-    attachPointerDrag(button, item);
+    attachPointerDrag(button, item, inTray);
   } else {
     button.classList.add("is-locked");
     button.disabled = true;
@@ -255,31 +256,18 @@ function hideAllTooltips() {
   state.openTooltipId = null;
 }
 
-function toggleTooltip(button, item) {
-  const wrapper = button.closest(".tray-slot");
-  if (!wrapper) return;
-
-  const existing = wrapper.querySelector(".product-tooltip");
-  if (existing) {
-    existing.remove();
-    state.openTooltipId = null;
-    return;
-  }
-
-  showNameTooltip(button, item);
-}
-
 function wireGlobalTapClose() {
   document.addEventListener("pointerdown", event => {
     const insideCard = event.target.closest(".product-card");
     const insideTooltip = event.target.closest(".product-tooltip");
-    if (!insideCard && !insideTooltip) {
+    const insideViewer = event.target.closest(".image-viewer-dialog");
+    if (!insideCard && !insideTooltip && !insideViewer) {
       hideAllTooltips();
     }
   });
 }
 
-function attachPointerDrag(element, item) {
+function attachPointerDrag(element, item, inTray) {
   let pointerId = null;
   let startLocation = null;
   let startShelfIndex = -1;
@@ -375,8 +363,10 @@ function attachPointerDrag(element, item) {
     state.draggingId = null;
 
     if (!movedEnough) {
-      if (pointerType === "touch" && startLocation === "tray") {
-        toggleTooltip(element, item);
+      if (pointerType === "touch" && inTray) {
+        openImageViewer(item);
+      } else if (pointerType === "mouse" && inTray) {
+        showNameTooltip(element, item);
       }
 
       cleanupDrag(element, ghost, pointerId);
@@ -589,37 +579,92 @@ function showPriceStrip(index, item) {
   strip.style.flexDirection = "column";
   strip.style.justifyContent = "center";
   strip.style.alignItems = "flex-start";
-  strip.style.padding = "4px 6px";
-  strip.style.marginLeft = "2px";
-  strip.style.borderRadius = "10px";
+  strip.style.padding = "3px 4px";
+  strip.style.marginLeft = "1px";
+  strip.style.borderRadius = "8px";
   strip.style.background = "linear-gradient(180deg, #ffffff 0%, #f6fff9 100%)";
-  strip.style.boxShadow = "0 2px 6px rgba(0, 0, 0, 0.12)";
+  strip.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.12)";
   strip.style.minWidth = "0";
 
   const nameEl = document.createElement("div");
   nameEl.textContent = item.name;
-  nameEl.style.fontSize = "0.62rem";
+  nameEl.style.fontSize = "0.52rem";
   nameEl.style.fontWeight = "700";
-  nameEl.style.lineHeight = "1.1";
-  nameEl.style.marginBottom = "2px";
+  nameEl.style.lineHeight = "1.05";
+  nameEl.style.marginBottom = "1px";
 
   const storeEl = document.createElement("div");
   storeEl.textContent = item.store;
-  storeEl.style.fontSize = "0.58rem";
+  storeEl.style.fontSize = "0.5rem";
   storeEl.style.color = "#666";
-  storeEl.style.lineHeight = "1.1";
+  storeEl.style.lineHeight = "1.05";
 
   const priceEl = document.createElement("div");
   priceEl.textContent = `$${item.price.toFixed(2)}`;
-  priceEl.style.fontSize = "0.9rem";
+  priceEl.style.fontSize = "0.76rem";
   priceEl.style.fontWeight = "800";
-  priceEl.style.marginTop = "3px";
+  priceEl.style.marginTop = "2px";
   priceEl.style.color = "#149c3a";
   priceEl.style.lineHeight = "1";
 
   strip.appendChild(nameEl);
   strip.appendChild(storeEl);
   strip.appendChild(priceEl);
+}
+
+function ensureImageViewer() {
+  if (document.getElementById("image-viewer")) return;
+
+  const viewer = document.createElement("div");
+  viewer.id = "image-viewer";
+  viewer.className = "image-viewer";
+  viewer.hidden = true;
+  viewer.innerHTML = `
+    <div class="image-viewer-backdrop" data-close-viewer="true"></div>
+    <div class="image-viewer-dialog" role="dialog" aria-modal="true" aria-label="Product image viewer">
+      <button type="button" class="image-viewer-close" aria-label="Close image viewer" data-close-viewer="true">×</button>
+      <img class="image-viewer-img" alt="">
+      <div class="image-viewer-meta">
+        <div class="image-viewer-name"></div>
+        <div class="image-viewer-store"></div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(viewer);
+
+  viewer.addEventListener("click", event => {
+    if (event.target.closest("[data-close-viewer='true']")) {
+      closeImageViewer();
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      closeImageViewer();
+    }
+  });
+}
+
+function openImageViewer(item) {
+  const viewer = document.getElementById("image-viewer");
+  if (!viewer) return;
+
+  viewer.querySelector(".image-viewer-img").src = item.image;
+  viewer.querySelector(".image-viewer-img").alt = item.name;
+  viewer.querySelector(".image-viewer-name").textContent = item.name;
+  viewer.querySelector(".image-viewer-store").textContent = item.store;
+
+  viewer.hidden = false;
+  document.body.classList.add("viewer-open");
+}
+
+function closeImageViewer() {
+  const viewer = document.getElementById("image-viewer");
+  if (!viewer) return;
+
+  viewer.hidden = true;
+  document.body.classList.remove("viewer-open");
 }
 
 async function shareResults() {
