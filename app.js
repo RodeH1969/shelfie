@@ -19,8 +19,52 @@ const state = {
   lockedIds: new Set(),
   history: [],
   draggingId: null,
-  openTooltipId: null
+  openTooltipId: null,
+  alreadyPlayedToday: false
 };
+
+function getDailyPlayKey(dateString) {
+  return `shelfie-played-${dateString}`;
+}
+
+function hasPlayedToday(dateString) {
+  try {
+    return localStorage.getItem(getDailyPlayKey(dateString)) !== null;
+  } catch (error) {
+    console.warn("localStorage unavailable:", error);
+    return false;
+  }
+}
+
+function savePlayedToday(dateString, data = {}) {
+  try {
+    localStorage.setItem(
+      getDailyPlayKey(dateString),
+      JSON.stringify({
+        playedAt: new Date().toISOString(),
+        ...data
+      })
+    );
+  } catch (error) {
+    console.warn("Could not save daily play lock:", error);
+  }
+}
+
+function lockGameForToday(message = "You’ve already played today’s Shelfie. Come back tomorrow.") {
+  state.alreadyPlayedToday = true;
+  state.lockedIds = new Set(state.items.map(item => item.id));
+  state.draggingId = null;
+
+  clearAllPriceStrips();
+  renderTray();
+  renderSlots();
+
+  submitButton.disabled = true;
+  submitButton.textContent = "played";
+  submitButton.onclick = null;
+
+  statusEl.textContent = message;
+}
 
 init();
 
@@ -65,10 +109,17 @@ async function init() {
 
     clearAllPriceStrips();
     ensureImageViewer();
-    renderTray();
-    renderSlots();
     wireSubmit();
     wireGlobalTapClose();
+
+    if (hasPlayedToday(state.puzzleDate)) {
+      lockGameForToday("You’ve already played today’s Shelfie. Come back tomorrow.");
+      return;
+    }
+
+    renderTray();
+    renderSlots();
+    updateSubmitState();
   } catch (error) {
     console.error(error);
     gameDateEl.textContent = "Game: Error";
@@ -203,14 +254,14 @@ function createCard(item, inTray) {
   img.draggable = false;
   button.appendChild(img);
 
-  if (!state.lockedIds.has(item.id)) {
+  if (!state.lockedIds.has(item.id) && !state.alreadyPlayedToday) {
     attachPointerDrag(button, item, inTray);
   } else {
     button.classList.add("is-locked");
     button.disabled = true;
   }
 
-  if (inTray) {
+  if (inTray && !state.alreadyPlayedToday) {
     button.title = item.name;
 
     button.addEventListener("mouseenter", () => {
@@ -285,7 +336,7 @@ function attachPointerDrag(element, item, inTray) {
   element.style.touchAction = "none";
 
   element.addEventListener("pointerdown", event => {
-    if (state.lockedIds.has(item.id)) return;
+    if (state.lockedIds.has(item.id) || state.alreadyPlayedToday) return;
     if (event.button !== undefined && event.button !== 0) return;
 
     const rect = element.getBoundingClientRect();
@@ -492,11 +543,22 @@ function wireSubmit() {
 }
 
 function updateSubmitState() {
+  if (state.alreadyPlayedToday) {
+    submitButton.disabled = true;
+    return;
+  }
+
   const allFilled = state.slots.every(Boolean);
   submitButton.disabled = !allFilled;
 }
 
 function handleSubmit() {
+  if (state.alreadyPlayedToday) {
+    statusEl.textContent = "You’ve already played today’s Shelfie. Come back tomorrow.";
+    submitButton.disabled = true;
+    return;
+  }
+
   if (!state.slots.every(Boolean)) {
     statusEl.textContent = "Drag all 7 items onto the shelf before submitting.";
     return;
@@ -545,6 +607,13 @@ function handleSubmit() {
     submitButton.textContent = "share";
     submitButton.disabled = false;
     submitButton.onclick = shareResults;
+
+    savePlayedToday(state.puzzleDate, {
+      result: "solved",
+      attemptsUsed: state.attempt,
+      history: state.history
+    });
+
     renderTray();
     renderSlots();
     return;
@@ -556,6 +625,13 @@ function handleSubmit() {
     submitButton.textContent = "share";
     submitButton.disabled = false;
     submitButton.onclick = shareResults;
+
+    savePlayedToday(state.puzzleDate, {
+      result: "failed",
+      attemptsUsed: state.maxAttempts,
+      history: state.history
+    });
+
     renderTray();
     renderSlots();
     return;
