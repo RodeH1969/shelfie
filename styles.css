@@ -112,18 +112,19 @@ textarea {
 
 .brand-panel {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 0;
-  margin-top: 0;
-  margin-bottom: 1px;
+  width: 100%;
+  margin: 0 0 4px;
   flex: 0 0 auto;
 }
 
 .logo {
-  width: min(52vw, 210px);
-  max-width: 210px;
+  display: block;
+  width: 100%;
+  max-width: 272px;
   height: auto;
+  object-fit: contain;
 }
 
 .game-board {
@@ -451,8 +452,7 @@ textarea {
   }
 
   .logo {
-    width: min(56vw, 230px);
-    max-width: 230px;
+    max-width: 282px;
   }
 
   .shelf-frame {
@@ -498,6 +498,7 @@ textarea {
 
   .logo {
     width: min(42vw, 170px);
+    max-width: 170px;
   }
 
   .shelf-frame {
@@ -586,6 +587,7 @@ textarea {
 
   .logo {
     width: min(34vw, 240px);
+    max-width: 240px;
   }
 
   .shelf-frame {
