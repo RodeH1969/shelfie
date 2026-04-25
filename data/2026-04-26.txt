@@ -6,7 +6,7 @@ ITEM
 NAME: La Gina Extra Virgin Olive Oil 1L 
 STORE: Woolworths
 PRICE: 26.00
-IMAGE: ./assets/Woolworths La Gina Extra Virgin Olive Oil 1L .png
+IMAGE: ./assets/Woolworths La Gina Extra Virgin Olive Oil 1L.png
 
 ITEM
 NAME: Trimat Advanced Laundry Powder 5kg 
@@ -24,7 +24,7 @@ ITEM
 NAME: Raid Max Pest Multi Insect Killer Spring Meadow 300g 
 STORE: Coles
 PRICE: 13.00
-IMAGE: ./assets/Coles Raid Max Pest Multi Insect Killer Spring Meadow 300g .png
+IMAGE: ./assets/Coles Raid Max Pest Multi Insect Killer Spring Meadow 300g.png
 
 ITEM
 NAME: Byron Bay Chilli Co. Jalapeno Sauce 250g
