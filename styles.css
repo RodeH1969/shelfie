@@ -10,8 +10,8 @@
 
   --radius-pill: 999px;
 
-  --slot-height: 67px;
-  --slot-gap: 4px;
+  --slot-height: 62px;
+  --slot-gap: 3px;
   --app-max: 980px;
 
   --font-main: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
@@ -88,15 +88,15 @@ textarea {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 16px;
-  margin-bottom: 1px;
+  min-height: 14px;
+  margin-bottom: 0;
   flex: 0 0 auto;
 }
 
 .game-date {
   margin: 0;
-  font-size: 0.68rem;
-  line-height: 1.02;
+  font-size: 0.64rem;
+  line-height: 1;
   color: #8b4f71;
   font-weight: 700;
   text-align: center;
@@ -114,11 +114,12 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 0;
+  margin-top: 0;
+  margin-bottom: 2px;
   flex: 0 0 auto;
 }
 
-/* bigger, more readable logo */
 .logo {
   width: min(56vw, 230px);
   max-width: 230px;
@@ -316,11 +317,10 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   flex: 0 0 auto;
 }
 
-/* bigger, more readable instructions */
 .turns,
 .status-message {
   margin: 0;
@@ -328,22 +328,22 @@ textarea {
 }
 
 .turns {
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.05;
 }
 
 .status-message {
   max-width: 260px;
   color: var(--muted);
-  font-size: 0.76rem;
-  line-height: 1.2;
+  font-size: 0.72rem;
+  line-height: 1.18;
 }
 
 .actions {
   display: flex;
   justify-content: center;
-  padding-top: 2px;
+  padding-top: 0;
   flex: 0 0 auto;
 }
 
@@ -447,8 +447,8 @@ textarea {
 
 @media (min-width: 390px) and (min-height: 760px) {
   :root {
-    --slot-height: 72px;
-    --slot-gap: 5px;
+    --slot-height: 68px;
+    --slot-gap: 4px;
   }
 
   .logo {
