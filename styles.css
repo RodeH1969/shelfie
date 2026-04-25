@@ -118,17 +118,11 @@ textarea {
   flex: 0 0 auto;
 }
 
+/* bigger, more readable logo */
 .logo {
-  width: min(20vw, 72px);
-}
-
-.game-title {
-  margin: 0;
-  max-width: 210px;
-  text-align: center;
-  font-size: 0.66rem;
-  line-height: 1.02;
-  font-weight: 700;
+  width: min(56vw, 230px);
+  max-width: 230px;
+  height: auto;
 }
 
 .game-board {
@@ -322,10 +316,11 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   flex: 0 0 auto;
 }
 
+/* bigger, more readable instructions */
 .turns,
 .status-message {
   margin: 0;
@@ -333,22 +328,22 @@ textarea {
 }
 
 .turns {
-  font-size: 0.62rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.1;
 }
 
 .status-message {
-  max-width: 230px;
+  max-width: 260px;
   color: var(--muted);
-  font-size: 0.6rem;
-  line-height: 1.04;
+  font-size: 0.76rem;
+  line-height: 1.2;
 }
 
 .actions {
   display: flex;
   justify-content: center;
-  padding-top: 1px;
+  padding-top: 2px;
   flex: 0 0 auto;
 }
 
@@ -457,11 +452,8 @@ textarea {
   }
 
   .logo {
-    width: min(21vw, 76px);
-  }
-
-  .game-title {
-    font-size: 0.7rem;
+    width: min(60vw, 260px);
+    max-width: 260px;
   }
 
   .shelf-frame {
@@ -507,12 +499,6 @@ textarea {
 
   .logo {
     width: min(42vw, 170px);
-  }
-
-  .game-title {
-    max-width: 340px;
-    font-size: clamp(0.95rem, 2.8vw, 1.2rem);
-    line-height: 1.15;
   }
 
   .shelf-frame {
@@ -601,12 +587,6 @@ textarea {
 
   .logo {
     width: min(34vw, 240px);
-  }
-
-  .game-title {
-    max-width: 520px;
-    font-size: clamp(1.1rem, 2.4vw, 1.7rem);
-    line-height: 1.2;
   }
 
   .shelf-frame {
