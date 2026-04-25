@@ -1,0 +1,45 @@
+DATE: 2026-04-26
+LABEL: Sunday 26 April
+MAX_ATTEMPTS: 6
+
+ITEM
+NAME: La Gina Extra Virgin Olive Oil 1L 
+STORE: Woolworths
+PRICE: 26.00
+IMAGE: ./assets/Woolworths La Gina Extra Virgin Olive Oil 1L .png
+
+ITEM
+NAME: Trimat Advanced Laundry Powder 5kg 
+STORE: Aldi
+PRICE: 24.99
+IMAGE: ./assets/Aldi Trimat Advanced Laundry Powder 5kg.png
+
+ITEM
+NAME: Fresh Tasmanian Salmon Fillets Skin On 4 Pack 460g 
+STORE: Aldi
+PRICE: 15.99
+IMAGE: ./assets/Aldi Fresh Tasmanian Salmon Fillets Skin On 4 Pack 460g.png
+
+ITEM
+NAME: Raid Max Pest Multi Insect Killer Spring Meadow 300g 
+STORE: Coles
+PRICE: 13.00
+IMAGE: ./assets/Coles Raid Max Pest Multi Insect Killer Spring Meadow 300g .png
+
+ITEM
+NAME: Byron Bay Chilli Co. Jalapeno Sauce 250g
+STORE: Woolworths
+PRICE: 5.00
+IMAGE: ./assets/Woolworths Byron Bay Chilli Co. Jalapeno Sauce 250g.png
+
+ITEM
+NAME: Libra Super Tampons 32 pack 
+STORE: Coles
+PRICE: 9.00
+IMAGE: ./assets/Coles Libra Super Tampons 32 pack.png
+
+ITEM
+NAME: Duracell Coppertop AA Alkaline Batteries 16 Pack 
+STORE: Coles
+PRICE: 28.00
+IMAGE: ./assets/Coles Duracell Coppertop AA Alkaline Batteries 16 Pack.png

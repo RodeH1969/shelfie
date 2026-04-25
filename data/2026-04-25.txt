@@ -1,5 +1,5 @@
 DATE: 2026-04-25
-LABEL: Sunday 25 April
+LABEL: Saturday 25 April
 MAX_ATTEMPTS: 6
 
 ITEM
