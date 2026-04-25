@@ -10,8 +10,8 @@
 
   --radius-pill: 999px;
 
-  --slot-height: 58px;
-  --slot-gap: 3px;
+  --slot-height: 54px;
+  --slot-gap: 2px;
   --app-max: 980px;
 
   --font-main: "Trebuchet MS", "Segoe UI", Arial, sans-serif;
@@ -105,7 +105,7 @@ textarea {
 .game-layout {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 2px;
   flex: 1 1 auto;
   min-height: 0;
 }
@@ -115,7 +115,7 @@ textarea {
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 0 0 4px;
+  margin: 0 0 2px;
   flex: 0 0 auto;
 }
 
@@ -147,7 +147,7 @@ textarea {
   position: relative;
   width: 100%;
   max-width: 272px;
-  padding: 5px 6px;
+  padding: 4px 5px;
   border-radius: 14px;
   background: linear-gradient(180deg, #bdbdbd 0%, #969696 100%);
   box-shadow:
@@ -197,7 +197,9 @@ textarea {
   position: relative;
   min-height: var(--slot-height);
   border-radius: 10px;
-  background: linear-gradient(180deg, #fafafa 0%, #eeeeee 100%);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.08) 14%, rgba(0,0,0,0.02) 15%, rgba(0,0,0,0.02) 17%, transparent 17%),
+    linear-gradient(180deg, #fafafa 0%, #eeeeee 100%);
   border: 2px solid rgba(36, 36, 36, 0.86);
   box-shadow:
     inset 0 5px 8px rgba(255, 255, 255, 0.58),
@@ -209,6 +211,18 @@ textarea {
   padding: 3px;
 }
 
+.shelf-slot::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 10px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.75), rgba(90,90,90,0.25), rgba(255,255,255,0.75));
+  opacity: 0.8;
+}
+
 .shelf-slot::after {
   content: "";
   position: absolute;
@@ -217,8 +231,10 @@ textarea {
   bottom: -3px;
   height: 5px;
   border-radius: 0 0 6px 6px;
-  background: linear-gradient(180deg, #6f6f6f 0%, #3f3f3f 100%);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  background: linear-gradient(180deg, #7a6852 0%, #5f4d39 45%, #433323 100%);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.18);
 }
 
 .shelf-slot.is-drop-target {
@@ -257,7 +273,7 @@ textarea {
 .product-card {
   position: relative;
   width: 100%;
-  min-height: 50px;
+  min-height: 48px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.96);
@@ -289,7 +305,7 @@ textarea {
 }
 
 .product-card img {
-  max-height: 35px;
+  max-height: 33px;
   width: auto;
   object-fit: contain;
   pointer-events: none;
@@ -318,7 +334,7 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 0;
   flex: 0 0 auto;
   margin-top: -1px;
 }
@@ -330,16 +346,16 @@ textarea {
 }
 
 .turns {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  line-height: 1.02;
+  line-height: 1;
 }
 
 .status-message {
   max-width: 250px;
   color: var(--muted);
-  font-size: 0.66rem;
-  line-height: 1.08;
+  font-size: 0.61rem;
+  line-height: 1.02;
 }
 
 .actions {
@@ -447,8 +463,8 @@ textarea {
 
 @media (min-width: 390px) and (min-height: 760px) {
   :root {
-    --slot-height: 64px;
-    --slot-gap: 4px;
+    --slot-height: 60px;
+    --slot-gap: 3px;
   }
 
   .logo {
@@ -460,11 +476,11 @@ textarea {
   }
 
   .product-card {
-    min-height: 54px;
+    min-height: 52px;
   }
 
   .product-card img {
-    max-height: 38px;
+    max-height: 36px;
   }
 
   .submit-button {
@@ -523,6 +539,12 @@ textarea {
     border-radius: 16px;
     border-width: 2px;
     padding: 6px;
+  }
+
+  .shelf-slot::before {
+    top: 12px;
+    left: 12px;
+    right: 12px;
   }
 
   .shelf-slot::after {
@@ -620,6 +642,12 @@ textarea {
     border-radius: 18px;
     border-width: 3px;
     padding: 8px;
+  }
+
+  .shelf-slot::before {
+    top: 16px;
+    left: 14px;
+    right: 14px;
   }
 
   .shelf-slot::after {

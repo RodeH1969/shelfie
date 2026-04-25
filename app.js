@@ -669,21 +669,21 @@ function closeImageViewer() {
 
 function getShareHeadline(turnsUsed, gameDate) {
   if (turnsUsed === 1) {
-    return `Shelfie ${gameDate} LEGENDary: Got it in 1 go! 🔥`;
+    return `Shelfie ${gameDate}\nLEGENDary: Got it in 1 go! 🔥`;
   }
   if (turnsUsed === 2) {
-    return `Shelfie ${gameDate} Pretty Pretty Good: Got it 2nd attempt. 👑`;
+    return `Shelfie ${gameDate}\nPretty Pretty Good: Got it 2nd attempt. 👑`;
   }
   if (turnsUsed === 3) {
-    return `Shelfie ${gameDate} Not bad. 3 times a charm. 💐`;
+    return `Shelfie ${gameDate}\nNot bad. 3 times a charm. 💐`;
   }
   if (turnsUsed === 4) {
-    return `Shelfie ${gameDate} Thanks for playing. 4 aint bad. 🫂`;
+    return `Shelfie ${gameDate}\nThanks for playing. 4 aint bad. 🫂`;
   }
   if (turnsUsed === 5) {
-    return `Shelfie ${gameDate} Do you shop ever? Took you 5 goes. 🍋`;
+    return `Shelfie ${gameDate}\nDo you shop ever? Took you 5 goes. 🍋`;
   }
-  return `Shelfie ${gameDate} Go see a doctor, right now? 6 tries. 🩺`;
+  return `Shelfie ${gameDate}\nGo see a doctor, right now? 6 tries. 🩺`;
 }
 
 async function shareResults() {
@@ -691,7 +691,7 @@ async function shareResults() {
   const turnsUsed = solved ? state.history.length : state.maxAttempts;
   const headline = solved
     ? getShareHeadline(turnsUsed, state.puzzleDate)
-    : `Shelfie ${state.puzzleDate} X/${state.maxAttempts}`;
+    : `Shelfie ${state.puzzleDate}\nX/${state.maxAttempts}`;
 
   const text = [headline, ...state.history, window.location.href].join("\n");
 
