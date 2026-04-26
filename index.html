@@ -123,14 +123,63 @@ data-close-rules="true"
 
 <h2 id="rules-title" class="rules-modal-title">how to play</h2>
 
-<div class="rules-modal-body">
-  <p>Drag all 7 products onto the shelf.</p>
-  <p>Order them from highest price to lowest.</p>
-  <p>You get 1 lock per round.</p>
-  <p>Perfect shelf = win.</p>
-  <p>Miss even 1, and everything resets.</p>
-  <p>Only a correct locked item stays.</p>
-  <p>So it’s price + memory.</p>
+<div class="rules-modal-body shelf-rules">
+  <div class="shelf-rule-row">
+    <div class="shelf-deco-products" aria-hidden="true">
+      <span class="deco-product deco-box deco-red"></span>
+      <span class="deco-product deco-can deco-blue"></span>
+      <span class="deco-price-tag">$5.20</span>
+    </div>
+    <p class="shelf-rule-card">Drag all 7 products onto the shelf.</p>
+  </div>
+
+  <div class="shelf-rule-row">
+    <p class="shelf-rule-card">Order them from highest price to lowest.</p>
+    <div class="shelf-deco-products" aria-hidden="true">
+      <span class="deco-price-tag">$11.99</span>
+      <span class="deco-product deco-bottle deco-gold"></span>
+      <span class="deco-product deco-box deco-green"></span>
+    </div>
+  </div>
+
+  <div class="shelf-rule-row">
+    <div class="shelf-deco-products" aria-hidden="true">
+      <span class="deco-product deco-can deco-pink"></span>
+      <span class="deco-price-tag">1 LOCK</span>
+    </div>
+    <p class="shelf-rule-card">You get 1 lock per round.</p>
+  </div>
+
+  <div class="shelf-rule-row shelf-rule-row-win">
+    <p class="shelf-rule-card shelf-rule-card-strong">Perfect shelf = win.</p>
+    <div class="shelf-deco-products" aria-hidden="true">
+      <span class="deco-price-tag deco-price-tag-win">100%</span>
+    </div>
+  </div>
+
+  <div class="shelf-rule-row">
+    <div class="shelf-deco-products" aria-hidden="true">
+      <span class="deco-product deco-box deco-orange"></span>
+      <span class="deco-price-tag">RESET</span>
+    </div>
+    <p class="shelf-rule-card shelf-rule-card-strong">Miss even 1, and everything resets.</p>
+  </div>
+
+  <div class="shelf-rule-row">
+    <p class="shelf-rule-card shelf-rule-card-strong">Only a correct locked item stays.</p>
+    <div class="shelf-deco-products" aria-hidden="true">
+      <span class="deco-product deco-bottle deco-purple"></span>
+      <span class="deco-price-tag">$3.49</span>
+    </div>
+  </div>
+
+  <div class="shelf-rule-row shelf-rule-row-final">
+    <div class="shelf-deco-products" aria-hidden="true">
+      <span class="deco-product deco-can deco-teal"></span>
+      <span class="deco-product deco-box deco-yellow"></span>
+    </div>
+    <p class="shelf-rule-card shelf-rule-card-final">So it’s price + memory.</p>
+  </div>
 </div>
 </div>
 </div>
