@@ -1,45 +1,45 @@
 DATE: 2026-04-27
-LABEL: Tuesday 27 April
+LABEL: Monday 27 April
 MAX_ATTEMPTS: 6
 
 ITEM
-NAME: Hydale Beef Jerky Original 50g 
+NAME: Beef Jerky Original 50g 
 STORE: Aldi
 PRICE: 3.99
-IMAGE: ./assets/Hydale Beef Jerky Original 50g.png
+IMAGE: ./assets/Beef Jerky Original 50g.png
 
 ITEM
-NAME: Westacre Dairy Cottage Cheese 500g 
+NAME: Cottage Cheese 500g 
 STORE: Aldi
 PRICE: 5.49
-IMAGE: ./assets/Westacre Dairy Cottage Cheese 500g.png
+IMAGE: ./assets/Cottage Cheese 500g.png
 
 ITEM
-NAME: International Cuisine Beef Lasagne 2kg 
-STORE: Aldi
-PRICE: 11.49
-IMAGE: ./assets/International Cuisine Beef Lasagne 2kg.png
+NAME: Nivea Deo Aero Female Pearl And Beauty 250mL 
+STORE: Coles
+PRICE: 10.50
+IMAGE: ./assets/Nivea Deo Aero Female Pearl And Beauty 250mL.png
 
 ITEM
-NAME: Milfina Jelli Pop 6 Pack 450ml
-STORE: Aldi
-PRICE: 4.99
-IMAGE: ./assets/Milfina Jelli Pop 6 Pack 450ml.png
+NAME: Nescafe Gold Original Soluble Instant Coffee Jar 100g
+STORE: Woolworths
+PRICE: 14.50
+IMAGE: ./assets/Nescafe Gold Original Soluble Instant Coffee Jar 100g.png
 
 ITEM
-NAME: Specially Selected Calabrese Salami & Roasted Red Peppers Wood Fired Pizza 420g
-STORE: Aldi
-PRICE: 7.99
-IMAGE: ./assets/Specially Selected Calabrese Salami & Roasted Red Peppers Wood Fired Pizza 420g.png
+NAME: Durex Original Regular Fit Condoms 30 pack
+STORE: Woolworths
+PRICE: 17.50
+IMAGE: ./assets/Durex Original Regular Fit Condoms 30 pack.png
 
 ITEM
-NAME: Finish Ultimate 0% Dishwashing Tablets 46 Pack
-STORE: Aldi
-PRICE: 22.99
-IMAGE: ./assets/Finish Ultimate 0% Dishwashing Tablets 46 Pack.png
+NAME: Peters Maxibon Original Vanilla 4 Pack 560mL 
+STORE: Coles
+PRICE: 11.50
+IMAGE: ./assets/Peters Maxibon Original Vanilla 4 Pack 560mL.png
 
 ITEM
-NAME: El Tora Fajita Seasoning 40g 
-STORE: Aldi
-PRICE: 1.29
-IMAGE: ./assets/El Tora Fajita Seasoning 40g.png
+NAME: Old El Paso Quesadilla Kit 365g 
+STORE: Coles
+PRICE: 8.50
+IMAGE: ./assets/Old El Paso Quesadilla Kit 365g.png
