@@ -1,97 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  />
-  <title>Shelfie</title>
-  <meta
-    name="description"
-    content="Shelfie - stack the shelf from highest price to lowest in the least moves."
-  />
-  <link rel="icon" href="./assets/shelfielogo.png" />
-  <link rel="stylesheet" href="./styles.css" />
+<meta charset="UTF-8" />
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1, viewport-fit=cover"
+/>
+<title>Shelfie</title>
+<meta
+name="description"
+content="Shelfie - stack the shelf from highest price to lowest in the least moves."
+/>
+<link rel="icon" href="./assets/shelfielogo.png" />
+<link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
-  <a class="skip-link" href="#main-content">Skip to game</a>
+<a class="skip-link" href="#main-content">Skip to game</a>
 
-  <div class="app-shell">
-    <header class="topbar">
-      <p class="game-date" id="game-date">Game: Loading...</p>
-    </header>
+<div class="app-shell">
+<header class="topbar">
+<p class="game-date" id="game-date">Game: Loading...</p>
+</header>
 
-    <main id="main-content" class="game-layout">
-      <section class="brand-panel" aria-label="Game heading">
-        <img
-          class="logo"
-          src="./assets/shelfielogo.png"
-          alt="Shelfie logo"
-          width="220"
-          height="120"
-        />
-      </section>
+<main id="main-content" class="game-layout">
+<section class="brand-panel" aria-label="Game heading">
+<img
+class="logo"
+src="./assets/shelfielogo.png"
+alt="Shelfie logo"
+width="220"
+height="120"
+/>
+</section>
 
-      <section class="game-board" aria-label="Shelfie game board">
-        <div class="shelf-area">
-          <div class="shelf-frame" id="shelf">
-            <!-- 7 rows: shelf slot + price strip + tray slot -->
-            <div class="shelf-row" data-row="0">
-              <div class="shelf-slot" data-slot="0"></div>
-              <div class="price-strip" data-price-slot="0"></div>
-              <div class="tray-slot" data-tray-slot="0"></div>
-            </div>
-            <div class="shelf-row" data-row="1">
-              <div class="shelf-slot" data-slot="1"></div>
-              <div class="price-strip" data-price-slot="1"></div>
-              <div class="tray-slot" data-tray-slot="1"></div>
-            </div>
-            <div class="shelf-row" data-row="2">
-              <div class="shelf-slot" data-slot="2"></div>
-              <div class="price-strip" data-price-slot="2"></div>
-              <div class="tray-slot" data-tray-slot="2"></div>
-            </div>
-            <div class="shelf-row" data-row="3">
-              <div class="shelf-slot" data-slot="3"></div>
-              <div class="price-strip" data-price-slot="3"></div>
-              <div class="tray-slot" data-tray-slot="3"></div>
-            </div>
-            <div class="shelf-row" data-row="4">
-              <div class="shelf-slot" data-slot="4"></div>
-              <div class="price-strip" data-price-slot="4"></div>
-              <div class="tray-slot" data-tray-slot="4"></div>
-            </div>
-            <div class="shelf-row" data-row="5">
-              <div class="shelf-slot" data-slot="5"></div>
-              <div class="price-strip" data-price-slot="5"></div>
-              <div class="tray-slot" data-tray-slot="5"></div>
-            </div>
-            <div class="shelf-row" data-row="6">
-              <div class="shelf-slot" data-slot="6"></div>
-              <div class="price-strip" data-price-slot="6"></div>
-              <div class="tray-slot" data-tray-slot="6"></div>
-            </div>
-          </div>
-        </div>
-      </section>
+<section class="game-board" aria-label="Shelfie game board">
+<div class="shelf-area">
+<div class="shelf-frame" id="shelf">
+<div class="shelf-row" data-row="0">
+<div class="shelf-slot" data-slot="0"></div>
+<div class="price-strip" data-price-slot="0"></div>
+<div class="tray-slot" data-tray-slot="0"></div>
+</div>
+<div class="shelf-row" data-row="1">
+<div class="shelf-slot" data-slot="1"></div>
+<div class="price-strip" data-price-slot="1"></div>
+<div class="tray-slot" data-tray-slot="1"></div>
+</div>
+<div class="shelf-row" data-row="2">
+<div class="shelf-slot" data-slot="2"></div>
+<div class="price-strip" data-price-slot="2"></div>
+<div class="tray-slot" data-tray-slot="2"></div>
+</div>
+<div class="shelf-row" data-row="3">
+<div class="shelf-slot" data-slot="3"></div>
+<div class="price-strip" data-price-slot="3"></div>
+<div class="tray-slot" data-tray-slot="3"></div>
+</div>
+<div class="shelf-row" data-row="4">
+<div class="shelf-slot" data-slot="4"></div>
+<div class="price-strip" data-price-slot="4"></div>
+<div class="tray-slot" data-tray-slot="4"></div>
+</div>
+<div class="shelf-row" data-row="5">
+<div class="shelf-slot" data-slot="5"></div>
+<div class="price-strip" data-price-slot="5"></div>
+<div class="tray-slot" data-tray-slot="5"></div>
+</div>
+<div class="shelf-row" data-row="6">
+<div class="shelf-slot" data-slot="6"></div>
+<div class="price-strip" data-price-slot="6"></div>
+<div class="tray-slot" data-tray-slot="6"></div>
+</div>
+</div>
+</div>
+</section>
 
-      <section class="feedback-panel" aria-label="Game feedback">
-        <p class="turns" id="turns">Turn 1 of 6</p>
-        <p class="status-message" id="status-message">
-          Drag all 7 items onto the shelf, then press submit.<br />
-          Click on an image to get product details.
-        </p>
-      </section>
+<section class="feedback-panel" aria-label="Game feedback">
+<p class="turns" id="turns">Turn 1 of 6</p>
+<p class="status-message" id="status-message">
+Drag all 7 items onto the shelf, then press submit.<br />
+Click on an image to get product details.
+</p>
+</section>
 
-      <section class="actions" aria-label="Game actions">
-        <button class="submit-button" id="submit-button" type="button">
-          submit
-        </button>
-      </section>
-    </main>
-  </div>
+<section class="actions" aria-label="Game actions">
+<button class="submit-button" id="submit-button" type="button">
+submit
+</button>
 
-  <script src="./app.js" defer></script>
+<button
+id="rules-button"
+class="rules-button"
+type="button"
+aria-label="How to play"
+aria-haspopup="dialog"
+aria-controls="rules-modal"
+aria-expanded="false"
+>
+?
+</button>
+</section>
+</main>
+</div>
+
+<div id="rules-modal" class="rules-modal" hidden>
+<div class="rules-modal-backdrop" data-close-rules="true"></div>
+
+<div
+class="rules-modal-dialog"
+role="dialog"
+aria-modal="true"
+aria-labelledby="rules-title"
+>
+<button
+type="button"
+class="rules-modal-close"
+aria-label="Close rules"
+data-close-rules="true"
+>
+×
+</button>
+
+<h2 id="rules-title" class="rules-modal-title">how to play</h2>
+
+<div class="rules-modal-body">
+  <p>Drag all 7 products onto the shelf.</p>
+  <p>Order them from highest price to lowest.</p>
+  <p>You get 1 lock per round.</p>
+  <p>Perfect shelf = win.</p>
+  <p>Miss even 1, and everything resets.</p>
+  <p>Only a correct locked item stays.</p>
+  <p>So it’s price + memory.</p>
+</div>
+</div>
+</div>
+
+<script src="./app.js" defer></script>
 </body>
 </html>

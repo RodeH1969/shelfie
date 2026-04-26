@@ -7,6 +7,7 @@ const statusEl = document.getElementById("status-message");
 const submitButton = document.getElementById("submit-button");
 
 const DRAG_THRESHOLD = 10;
+const RESULT_FLASH_MS = 2000;
 
 const state = {
   maxAttempts: 6,
@@ -20,7 +21,10 @@ const state = {
   history: [],
   draggingId: null,
   openTooltipId: null,
-  alreadyPlayedToday: false
+  alreadyPlayedToday: false,
+  selectedLockId: null,
+  selectedLockSlotIndex: null,
+  resolvingTurn: false
 };
 
 function getDailyPlayKey(dateString) {
@@ -109,6 +113,7 @@ async function init() {
 
     clearAllPriceStrips();
     ensureImageViewer();
+    ensureRulesModal();
     wireSubmit();
     wireGlobalTapClose();
 
@@ -254,11 +259,61 @@ function createCard(item, inTray) {
   img.draggable = false;
   button.appendChild(img);
 
-  if (!state.lockedIds.has(item.id) && !state.alreadyPlayedToday) {
+  if (
+    !inTray &&
+    state.selectedLockId === item.id &&
+    !state.lockedIds.has(item.id)
+  ) {
+    const lockBadge = document.createElement("div");
+    lockBadge.className = "item-lock-button is-selected item-lock-badge";
+    lockBadge.setAttribute("aria-hidden", "true");
+    lockBadge.textContent = "🔒";
+    button.appendChild(lockBadge);
+  }
+
+  if (
+    inTray &&
+    !state.lockedIds.has(item.id) &&
+    !state.alreadyPlayedToday &&
+    !state.resolvingTurn &&
+    (state.selectedLockId === null || state.selectedLockId === item.id)
+  ) {
+    const lockButton = document.createElement("button");
+    lockButton.type = "button";
+    lockButton.className = "item-lock-button";
+    lockButton.setAttribute("aria-label", `Lock ${item.name} for this turn`);
+    lockButton.setAttribute(
+      "aria-pressed",
+      state.selectedLockId === item.id ? "true" : "false"
+    );
+    lockButton.textContent = "🔒";
+
+    if (state.selectedLockId === item.id) {
+      lockButton.classList.add("is-selected");
+    }
+
+    lockButton.addEventListener("pointerdown", event => {
+      event.stopPropagation();
+    });
+
+    lockButton.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      selectLock(item.id);
+    });
+
+    button.appendChild(lockButton);
+  }
+
+  if (!state.lockedIds.has(item.id) && !state.alreadyPlayedToday && !state.resolvingTurn) {
     attachPointerDrag(button, item, inTray);
-  } else {
-    button.classList.add("is-locked");
-    button.disabled = true;
+  } else if (state.lockedIds.has(item.id) || state.alreadyPlayedToday || state.resolvingTurn) {
+    if (state.lockedIds.has(item.id)) {
+      button.classList.add("is-locked");
+    }
+    if (state.alreadyPlayedToday || state.resolvingTurn || state.lockedIds.has(item.id)) {
+      button.disabled = !!state.lockedIds.has(item.id);
+    }
   }
 
   if (inTray && !state.alreadyPlayedToday) {
@@ -312,7 +367,8 @@ function wireGlobalTapClose() {
     const insideCard = event.target.closest(".product-card");
     const insideTooltip = event.target.closest(".product-tooltip");
     const insideViewer = event.target.closest(".image-viewer-dialog");
-    if (!insideCard && !insideTooltip && !insideViewer) {
+    const insideRules = event.target.closest(".rules-modal-dialog");
+    if (!insideCard && !insideTooltip && !insideViewer && !insideRules) {
       hideAllTooltips();
     }
   });
@@ -336,8 +392,9 @@ function attachPointerDrag(element, item, inTray) {
   element.style.touchAction = "none";
 
   element.addEventListener("pointerdown", event => {
-    if (state.lockedIds.has(item.id) || state.alreadyPlayedToday) return;
+    if (state.lockedIds.has(item.id) || state.alreadyPlayedToday || state.resolvingTurn) return;
     if (event.button !== undefined && event.button !== 0) return;
+    if (event.target.closest(".item-lock-button")) return;
 
     const rect = element.getBoundingClientRect();
 
@@ -392,6 +449,12 @@ function attachPointerDrag(element, item, inTray) {
       ghost.style.pointerEvents = "none";
       ghost.style.zIndex = "9999";
       ghost.style.transform = "none";
+
+      const ghostLock = ghost.querySelector(".item-lock-button");
+      if (ghostLock) {
+        ghostLock.remove();
+      }
+
       document.body.appendChild(ghost);
 
       element.classList.add("is-drag-origin");
@@ -430,6 +493,10 @@ function attachPointerDrag(element, item, inTray) {
 
     clearSlotHighlights();
     moveItem(item, startLocation, startShelfIndex, dropIndex);
+
+    if (state.selectedLockId === item.id) {
+      state.selectedLockSlotIndex = state.slots.findIndex(s => s && s.id === item.id);
+    }
 
     cleanupDrag(element, ghost, pointerId);
     ghost = null;
@@ -474,8 +541,15 @@ function moveItem(item, startLocation, startShelfIndex, dropIndex) {
       state.slots[prevIndex] = null;
     }
 
+    if (state.selectedLockId === item.id) {
+      state.selectedLockSlotIndex = null;
+    }
+
     if (startLocation === "shelf" && startShelfIndex !== -1) {
       state.slots[startShelfIndex] = item;
+      if (state.selectedLockId === item.id) {
+        state.selectedLockSlotIndex = startShelfIndex;
+      }
     }
 
     return;
@@ -498,10 +572,18 @@ function moveItem(item, startLocation, startShelfIndex, dropIndex) {
       startShelfIndex !== dropIndex
     ) {
       state.slots[startShelfIndex] = occupyingItem;
+
+      if (state.selectedLockId === occupyingItem.id) {
+        state.selectedLockSlotIndex = startShelfIndex;
+      }
     }
   }
 
   state.slots[dropIndex] = item;
+
+  if (state.selectedLockId === item.id) {
+    state.selectedLockSlotIndex = dropIndex;
+  }
 }
 
 function highlightSlotAt(x, y) {
@@ -543,7 +625,7 @@ function wireSubmit() {
 }
 
 function updateSubmitState() {
-  if (state.alreadyPlayedToday) {
+  if (state.alreadyPlayedToday || state.resolvingTurn) {
     submitButton.disabled = true;
     return;
   }
@@ -559,6 +641,10 @@ function handleSubmit() {
     return;
   }
 
+  if (state.resolvingTurn) {
+    return;
+  }
+
   if (!state.slots.every(Boolean)) {
     statusEl.textContent = "Drag all 7 items onto the shelf before submitting.";
     return;
@@ -567,8 +653,22 @@ function handleSubmit() {
   const correctOrder = [...state.items].sort((a, b) => b.price - a.price);
   const rowResult = [];
   let correctCount = 0;
+  const selectedLockId = state.selectedLockId;
+  const selectedLockSlotIndex =
+    selectedLockId && state.selectedLockSlotIndex !== null
+      ? state.selectedLockSlotIndex
+      : state.slots.findIndex(s => s && s.id === selectedLockId);
+
+  const selectedLockWasCorrect =
+    selectedLockId &&
+    selectedLockSlotIndex !== -1 &&
+    selectedLockSlotIndex !== null &&
+    state.slots[selectedLockSlotIndex] &&
+    state.slots[selectedLockSlotIndex].id === correctOrder[selectedLockSlotIndex].id;
 
   clearAllPriceStrips();
+  state.resolvingTurn = true;
+  updateSubmitState();
 
   state.slots.forEach((item, index) => {
     const slotEl = slotEls[index];
@@ -584,66 +684,107 @@ function handleSubmit() {
     slotEl.classList.remove("is-correct", "is-wrong");
     slotEl.classList.add(isCorrect ? "is-correct" : "is-wrong");
 
+    rowResult.push(isCorrect ? "🟩" : "🟥");
+
     if (isCorrect) {
-      state.lockedIds.add(item.id);
-      rowResult.push("🟩");
       correctCount += 1;
-      showPriceStrip(index, item);
-    } else {
-      rowResult.push("🟥");
-      state.slots[index] = null;
     }
   });
 
-  state.history.push(rowResult.join(""));
+  state.history.push(
+    buildShareRow(rowResult, selectedLockSlotIndex, !!selectedLockId, !!selectedLockWasCorrect)
+  );
 
-  const solved = state.lockedIds.size === state.items.length;
+  setTimeout(() => {
+    const keptLockedIds = new Set(state.lockedIds);
 
-  if (solved) {
+    if (selectedLockId && selectedLockWasCorrect) {
+      keptLockedIds.add(selectedLockId);
+    }
+
+    const solved = correctCount === state.items.length;
+
+    if (solved) {
+      state.lockedIds = new Set(state.items.map(item => item.id));
+
+      state.slots.forEach((item, index) => {
+        if (item) {
+          showPriceStrip(index, item);
+        }
+      });
+
+      turnsEl.textContent = `Turn ${state.attempt} of ${state.maxAttempts}`;
+      statusEl.textContent = `Perfect shelf! You solved today's Shelfie in ${state.attempt} turn${
+        state.attempt === 1 ? "" : "s"
+      }.`;
+      submitButton.textContent = "share";
+      submitButton.disabled = false;
+      submitButton.onclick = shareResults;
+
+      savePlayedToday(state.puzzleDate, {
+        result: "solved",
+        attemptsUsed: state.attempt,
+        history: state.history
+      });
+
+      clearTurnLock();
+      state.resolvingTurn = false;
+      renderTray();
+      renderSlots();
+      return;
+    }
+
+    const newSlots = new Array(state.items.length).fill(null);
+
+    state.slots.forEach((item, index) => {
+      if (!item) return;
+
+      if (keptLockedIds.has(item.id)) {
+        newSlots[index] = item;
+        showPriceStrip(index, item);
+      }
+    });
+
+    state.lockedIds = keptLockedIds;
+    state.slots = newSlots;
+
+    if (state.attempt >= state.maxAttempts) {
+      turnsEl.textContent = `Turn ${state.maxAttempts} of ${state.maxAttempts}`;
+      statusEl.textContent = `No more turns. You got ${correctCount} of ${state.items.length} correct. Come back tomorrow for a new Shelfie.`;
+      submitButton.textContent = "share";
+      submitButton.disabled = false;
+      submitButton.onclick = shareResults;
+
+      savePlayedToday(state.puzzleDate, {
+        result: "failed",
+        attemptsUsed: state.maxAttempts,
+        history: state.history
+      });
+
+      clearTurnLock();
+      state.resolvingTurn = false;
+      renderTray();
+      renderSlots();
+      return;
+    }
+
+    state.attempt += 1;
     turnsEl.textContent = `Turn ${state.attempt} of ${state.maxAttempts}`;
-    statusEl.textContent = `Perfect shelf! You solved today's Shelfie in ${state.attempt} turn${
-      state.attempt === 1 ? "" : "s"
-    }.`;
-    submitButton.textContent = "share";
-    submitButton.disabled = false;
-    submitButton.onclick = shareResults;
 
-    savePlayedToday(state.puzzleDate, {
-      result: "solved",
-      attemptsUsed: state.attempt,
-      history: state.history
-    });
+    if (selectedLockId) {
+      statusEl.textContent = selectedLockWasCorrect
+        ? `Locked item held. ${state.lockedIds.size} permanent anchor${state.lockedIds.size === 1 ? "" : "s"} on shelf.`
+        : `Lock missed. All unresolved items return to the pool.`;
+    } else {
+      statusEl.textContent = `No lock used. All unresolved items return to the pool.`;
+    }
 
+    clearTurnLock();
+    state.resolvingTurn = false;
     renderTray();
     renderSlots();
-    return;
-  }
-
-  if (state.attempt >= state.maxAttempts) {
-    turnsEl.textContent = `Turn ${state.maxAttempts} of ${state.maxAttempts}`;
-    statusEl.textContent = `No more turns. You got ${correctCount} of ${state.items.length} correct. Come back tomorrow for a new Shelfie.`;
-    submitButton.textContent = "share";
-    submitButton.disabled = false;
-    submitButton.onclick = shareResults;
-
-    savePlayedToday(state.puzzleDate, {
-      result: "failed",
-      attemptsUsed: state.maxAttempts,
-      history: state.history
-    });
-
-    renderTray();
-    renderSlots();
-    return;
-  }
-
-  state.attempt += 1;
-  turnsEl.textContent = `Turn ${state.attempt} of ${state.maxAttempts}`;
-  statusEl.textContent = `${correctCount} of ${state.items.length} correct.`;
-
-  renderTray();
-  renderSlots();
-  updateSubmitState();
+    updateSubmitState();
+  }, RESULT_FLASH_MS);
 }
 
 function showPriceStrip(index, item) {
@@ -743,6 +884,46 @@ function closeImageViewer() {
   document.body.classList.remove("viewer-open");
 }
 
+function ensureRulesModal() {
+  const rulesButton = document.getElementById("rules-button");
+  const rulesModal = document.getElementById("rules-modal");
+
+  if (!rulesButton || !rulesModal) return;
+
+  rulesButton.addEventListener("click", () => {
+    openRulesModal();
+    rulesButton.setAttribute("aria-expanded", "true");
+  });
+
+  rulesModal.addEventListener("click", event => {
+    if (event.target.closest("[data-close-rules='true']")) {
+      closeRulesModal();
+      rulesButton.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !rulesModal.hidden) {
+      closeRulesModal();
+      rulesButton.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+function openRulesModal() {
+  const rulesModal = document.getElementById("rules-modal");
+  if (!rulesModal) return;
+  rulesModal.hidden = false;
+  document.body.classList.add("viewer-open");
+}
+
+function closeRulesModal() {
+  const rulesModal = document.getElementById("rules-modal");
+  if (!rulesModal) return;
+  rulesModal.hidden = true;
+  document.body.classList.remove("viewer-open");
+}
+
 function getShareHeadline(turnsUsed, gameDate) {
   if (turnsUsed === 1) {
     return `Shelfie ${gameDate}\nLEGENDary: Got it in 1 go! 🔥`;
@@ -792,6 +973,33 @@ async function shareResults() {
     console.error(error);
     statusEl.textContent = "Could not share right now.";
   }
+}
+
+function selectLock(itemId) {
+  if (state.resolvingTurn || state.alreadyPlayedToday) return;
+  if (state.lockedIds.has(itemId)) return;
+
+  state.selectedLockId = state.selectedLockId === itemId ? null : itemId;
+  state.selectedLockSlotIndex = state.selectedLockId
+    ? state.slots.findIndex(s => s && s.id === state.selectedLockId)
+    : null;
+
+  renderTray();
+  renderSlots();
+  updateSubmitState();
+}
+
+function clearTurnLock() {
+  state.selectedLockId = null;
+  state.selectedLockSlotIndex = null;
+}
+
+function buildShareRow(rowResult, lockSlotIndex, hasLock, lockWasCorrect) {
+  const row = rowResult.join("");
+  if (!hasLock || lockSlotIndex === null || lockSlotIndex === -1) {
+    return row;
+  }
+  return `${row}  🔒${lockSlotIndex + 1} ${lockWasCorrect ? "✅" : "❌"}`;
 }
 
 function isTouchLike() {
