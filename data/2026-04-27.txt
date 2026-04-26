@@ -17,7 +17,7 @@ IMAGE: ./assets/Cottage Cheese 500g.png
 ITEM
 NAME: Nivea Deo Aero Female Pearl And Beauty 250mL 
 STORE: Coles
-PRICE: 15.99
+PRICE: 10.50
 IMAGE: ./assets/Nivea Deo Aero Female Pearl And Beauty 250mL.png
 
 ITEM
