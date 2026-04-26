@@ -36,10 +36,10 @@ ITEM
 NAME: Peters Maxibon Original Vanilla 4 Pack 560mL 
 STORE: Coles
 PRICE: 11.50
-IMAGE: ./assets/Coles Peters Maxibon Original Vanilla 4 Pack 560mL.png
+IMAGE: ./assets/Peters Maxibon Original Vanilla 4 Pack 560mL.png
 
 ITEM
 NAME: Old El Paso Quesadilla Kit 365g 
 STORE: Coles
 PRICE: 8.50
-IMAGE: ./assets/Coles Old El Paso Quesadilla Kit 365g.png
+IMAGE: ./assets/Old El Paso Quesadilla Kit 365g.png
