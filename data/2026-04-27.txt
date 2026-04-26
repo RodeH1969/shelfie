@@ -1,0 +1,45 @@
+DATE: 2026-04-27
+LABEL: Tuesday 27 April
+MAX_ATTEMPTS: 6
+
+ITEM
+NAME: Hydale Beef Jerky Original 50g 
+STORE: Aldi
+PRICE: 3.99
+IMAGE: ./assets/Hydale Beef Jerky Original 50g.png
+
+ITEM
+NAME: Westacre Dairy Cottage Cheese 500g 
+STORE: Aldi
+PRICE: 5.49
+IMAGE: ./assets/Westacre Dairy Cottage Cheese 500g.png
+
+ITEM
+NAME: International Cuisine Beef Lasagne 2kg 
+STORE: Aldi
+PRICE: 11.49
+IMAGE: ./assets/International Cuisine Beef Lasagne 2kg.png
+
+ITEM
+NAME: Milfina Jelli Pop 6 Pack 450ml
+STORE: Aldi
+PRICE: 4.99
+IMAGE: ./assets/Milfina Jelli Pop 6 Pack 450ml.png
+
+ITEM
+NAME: Specially Selected Calabrese Salami & Roasted Red Peppers Wood Fired Pizza 420g
+STORE: Aldi
+PRICE: 7.99
+IMAGE: ./assets/Specially Selected Calabrese Salami & Roasted Red Peppers Wood Fired Pizza 420g.png
+
+ITEM
+NAME: Finish Ultimate 0% Dishwashing Tablets 46 Pack
+STORE: Aldi
+PRICE: 22.99
+IMAGE: ./assets/Finish Ultimate 0% Dishwashing Tablets 46 Pack.png
+
+ITEM
+NAME: El Tora Fajita Seasoning 40g 
+STORE: Aldi
+PRICE: 1.29
+IMAGE: ./assets/El Tora Fajita Seasoning 40g.png
