@@ -33,10 +33,10 @@ PRICE: 7.99
 IMAGE: ./assets/Specially Selected Calabrese Salami & Roasted Red Peppers Wood Fired Pizza 420g.png
 
 ITEM
-NAME: Finish Ultimate 0% Dishwashing Tablets 46 Pack
+NAME: Finish Ultimate Dishwashing Tablets 46 Pack
 STORE: Aldi
 PRICE: 22.99
-IMAGE: ./assets/Finish Ultimate 0% Dishwashing Tablets 46 Pack.png
+IMAGE: ./assets/Finish-Ultimate-46-Pack.png
 
 ITEM
 NAME: El Tora Fajita Seasoning 40g 
