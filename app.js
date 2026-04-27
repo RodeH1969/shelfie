@@ -17,13 +17,12 @@ const state = {
   items: [],
   trayOrder: [],
   slots: new Array(7).fill(null),
-  lockedIds: new Set(),
+  lockedIds: new Set(),              // permanent anchors already won
   history: [],
   draggingId: null,
   openTooltipId: null,
   alreadyPlayedToday: false,
-  selectedLockId: null,
-  selectedLockSlotIndex: null,
+  selectedLockIds: new Set(),        // locks chosen for this turn
   resolvingTurn: false
 };
 
@@ -58,6 +57,7 @@ function lockGameForToday(message = "You’ve already played today’s Shelfie. 
   state.alreadyPlayedToday = true;
   state.lockedIds = new Set(state.items.map(item => item.id));
   state.draggingId = null;
+  state.selectedLockIds = new Set();
 
   clearAllPriceStrips();
   renderTray();
@@ -99,7 +99,8 @@ async function init() {
       name: item.name,
       store: item.store,
       price: Number(item.price),
-      image: item.image
+      image: item.image,
+      lockAvailable: true
     }));
 
     state.trayOrder = [...state.items];
@@ -217,9 +218,9 @@ function renderTray() {
     if (!item) return;
 
     const onShelfIndex = state.slots.findIndex(s => s && s.id === item.id);
-    const isLocked = state.lockedIds.has(item.id);
+    const isPermanent = state.lockedIds.has(item.id);
 
-    if (onShelfIndex !== -1 || isLocked) {
+    if (onShelfIndex !== -1 || isPermanent) {
       return;
     }
 
@@ -237,6 +238,7 @@ function renderSlots() {
     if (!item) return;
 
     const card = createCard(item, false);
+
     if (state.lockedIds.has(item.id)) {
       card.classList.add("is-locked");
       card.disabled = true;
@@ -261,7 +263,7 @@ function createCard(item, inTray) {
 
   if (
     !inTray &&
-    state.selectedLockId === item.id &&
+    state.selectedLockIds.has(item.id) &&
     !state.lockedIds.has(item.id)
   ) {
     const lockBadge = document.createElement("div");
@@ -276,19 +278,19 @@ function createCard(item, inTray) {
     !state.lockedIds.has(item.id) &&
     !state.alreadyPlayedToday &&
     !state.resolvingTurn &&
-    (state.selectedLockId === null || state.selectedLockId === item.id)
+    item.lockAvailable
   ) {
     const lockButton = document.createElement("button");
     lockButton.type = "button";
     lockButton.className = "item-lock-button";
-    lockButton.setAttribute("aria-label", `Lock ${item.name} for this turn`);
+    lockButton.setAttribute("aria-label", `Lock ${item.name} this turn`);
     lockButton.setAttribute(
       "aria-pressed",
-      state.selectedLockId === item.id ? "true" : "false"
+      state.selectedLockIds.has(item.id) ? "true" : "false"
     );
     lockButton.textContent = "🔒";
 
-    if (state.selectedLockId === item.id) {
+    if (state.selectedLockIds.has(item.id)) {
       lockButton.classList.add("is-selected");
     }
 
@@ -494,10 +496,6 @@ function attachPointerDrag(element, item, inTray) {
     clearSlotHighlights();
     moveItem(item, startLocation, startShelfIndex, dropIndex);
 
-    if (state.selectedLockId === item.id) {
-      state.selectedLockSlotIndex = state.slots.findIndex(s => s && s.id === item.id);
-    }
-
     cleanupDrag(element, ghost, pointerId);
     ghost = null;
 
@@ -540,18 +538,9 @@ function moveItem(item, startLocation, startShelfIndex, dropIndex) {
     if (prevIndex !== -1) {
       state.slots[prevIndex] = null;
     }
-
-    if (state.selectedLockId === item.id) {
-      state.selectedLockSlotIndex = null;
-    }
-
     if (startLocation === "shelf" && startShelfIndex !== -1) {
       state.slots[startShelfIndex] = item;
-      if (state.selectedLockId === item.id) {
-        state.selectedLockSlotIndex = startShelfIndex;
-      }
     }
-
     return;
   }
 
@@ -572,18 +561,10 @@ function moveItem(item, startLocation, startShelfIndex, dropIndex) {
       startShelfIndex !== dropIndex
     ) {
       state.slots[startShelfIndex] = occupyingItem;
-
-      if (state.selectedLockId === occupyingItem.id) {
-        state.selectedLockSlotIndex = startShelfIndex;
-      }
     }
   }
 
   state.slots[dropIndex] = item;
-
-  if (state.selectedLockId === item.id) {
-    state.selectedLockSlotIndex = dropIndex;
-  }
 }
 
 function highlightSlotAt(x, y) {
@@ -653,18 +634,10 @@ function handleSubmit() {
   const correctOrder = [...state.items].sort((a, b) => b.price - a.price);
   const rowResult = [];
   let correctCount = 0;
-  const selectedLockId = state.selectedLockId;
-  const selectedLockSlotIndex =
-    selectedLockId && state.selectedLockSlotIndex !== null
-      ? state.selectedLockSlotIndex
-      : state.slots.findIndex(s => s && s.id === selectedLockId);
 
-  const selectedLockWasCorrect =
-    selectedLockId &&
-    selectedLockSlotIndex !== -1 &&
-    selectedLockSlotIndex !== null &&
-    state.slots[selectedLockSlotIndex] &&
-    state.slots[selectedLockSlotIndex].id === correctOrder[selectedLockSlotIndex].id;
+  const selectedLockIds = new Set(state.selectedLockIds);
+  const lockCorrectMap = new Map();
+  const lockSlotMap = new Map();
 
   clearAllPriceStrips();
   state.resolvingTurn = true;
@@ -689,18 +662,28 @@ function handleSubmit() {
     if (isCorrect) {
       correctCount += 1;
     }
+
+    if (selectedLockIds.has(item.id)) {
+      lockCorrectMap.set(item.id, isCorrect);
+      lockSlotMap.set(item.id, index);
+    }
   });
 
-  state.history.push(
-    buildShareRow(rowResult, selectedLockSlotIndex, !!selectedLockId, !!selectedLockWasCorrect)
-  );
+  state.history.push(buildShareRow(rowResult, lockSlotMap, lockCorrectMap));
 
   setTimeout(() => {
     const keptLockedIds = new Set(state.lockedIds);
 
-    if (selectedLockId && selectedLockWasCorrect) {
-      keptLockedIds.add(selectedLockId);
-    }
+    lockCorrectMap.forEach((wasCorrect, id) => {
+      const lockedItem = state.items.find(i => i.id === id);
+      if (!lockedItem) return;
+
+      lockedItem.lockAvailable = false;
+
+      if (wasCorrect) {
+        keptLockedIds.add(id);
+      }
+    });
 
     const solved = correctCount === state.items.length;
 
@@ -727,7 +710,7 @@ function handleSubmit() {
         history: state.history
       });
 
-      clearTurnLock();
+      clearTurnLocks();
       state.resolvingTurn = false;
       renderTray();
       renderSlots();
@@ -761,7 +744,7 @@ function handleSubmit() {
         history: state.history
       });
 
-      clearTurnLock();
+      clearTurnLocks();
       state.resolvingTurn = false;
       renderTray();
       renderSlots();
@@ -771,15 +754,17 @@ function handleSubmit() {
     state.attempt += 1;
     turnsEl.textContent = `Turn ${state.attempt} of ${state.maxAttempts}`;
 
-    if (selectedLockId) {
-      statusEl.textContent = selectedLockWasCorrect
-        ? `Locked item held. ${state.lockedIds.size} permanent anchor${state.lockedIds.size === 1 ? "" : "s"} on shelf.`
-        : `Lock missed. All unresolved items return to the pool.`;
+    const locksUsed = selectedLockIds.size;
+    const locksHeld = Array.from(lockCorrectMap.values()).filter(Boolean).length;
+    const locksLost = locksUsed - locksHeld;
+
+    if (locksUsed > 0) {
+      statusEl.textContent = `${locksHeld} locked item${locksHeld === 1 ? "" : "s"} held, ${locksLost} lock${locksLost === 1 ? "" : "s"} lost.`;
     } else {
-      statusEl.textContent = `No lock used. All unresolved items return to the pool.`;
+      statusEl.textContent = "No locks used. All unresolved items return to the pool.";
     }
 
-    clearTurnLock();
+    clearTurnLocks();
     state.resolvingTurn = false;
     renderTray();
     renderSlots();
@@ -979,27 +964,36 @@ function selectLock(itemId) {
   if (state.resolvingTurn || state.alreadyPlayedToday) return;
   if (state.lockedIds.has(itemId)) return;
 
-  state.selectedLockId = state.selectedLockId === itemId ? null : itemId;
-  state.selectedLockSlotIndex = state.selectedLockId
-    ? state.slots.findIndex(s => s && s.id === state.selectedLockId)
-    : null;
+  const item = state.items.find(i => i.id === itemId);
+  if (!item || !item.lockAvailable) return;
+
+  if (state.selectedLockIds.has(itemId)) {
+    state.selectedLockIds.delete(itemId);
+  } else {
+    state.selectedLockIds.add(itemId);
+  }
 
   renderTray();
   renderSlots();
   updateSubmitState();
 }
 
-function clearTurnLock() {
-  state.selectedLockId = null;
-  state.selectedLockSlotIndex = null;
+function clearTurnLocks() {
+  state.selectedLockIds = new Set();
 }
 
-function buildShareRow(rowResult, lockSlotIndex, hasLock, lockWasCorrect) {
+function buildShareRow(rowResult, lockSlotMap, lockCorrectMap) {
   const row = rowResult.join("");
-  if (!hasLock || lockSlotIndex === null || lockSlotIndex === -1) {
+
+  if (!lockSlotMap || lockSlotMap.size === 0) {
     return row;
   }
-  return `${row}  🔒${lockSlotIndex + 1} ${lockWasCorrect ? "✅" : "❌"}`;
+
+  const lockBits = Array.from(lockSlotMap.entries())
+    .sort((a, b) => a[1] - b[1])
+    .map(([id, slotIndex]) => `🔒${slotIndex + 1}${lockCorrectMap.get(id) ? "✅" : "❌"}`);
+
+  return `${row}  ${lockBits.join(" ")}`;
 }
 
 function isTouchLike() {

@@ -570,33 +570,52 @@ textarea {
   backdrop-filter: blur(4px);
 }
 
+/* Image-based rules modal: ~70% of viewport */
+
 .rules-modal-dialog {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: min(86vw, 320px);
+  width: 70vw;
+  height: 70svh;
+  max-width: 420px;
+  max-height: 840px;
   transform: translate(-50%, -50%);
-  background:
-    linear-gradient(180deg, #fff9ef 0%, #fff2d8 100%);
-  border-radius: 20px;
-  padding: 18px 16px 16px;
-  border: 2px solid rgba(255, 191, 71, 0.55);
-  box-shadow:
-    0 18px 42px rgba(0, 0, 0, 0.34),
-    0 0 0 4px rgba(255, 243, 214, 0.55),
-    0 0 26px rgba(255, 183, 0, 0.18);
+  background: transparent;
+  border-radius: 18px;
+  padding: 0;
+  border: 0;
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
   overflow: hidden;
 }
 
-.rules-modal-dialog::before {
-  content: "";
+/* visually-hidden title; image contains heading */
+
+.rules-modal-title {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 8px;
-  background: linear-gradient(90deg, #ff7a00 0%, #ffcf33 45%, #fff176 100%);
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
+
+.rules-image-body {
+  width: 100%;
+  height: 100%;
+}
+
+.rules-howto-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 18px;
+}
+
+/* close button above image */
 
 .rules-modal-close {
   position: absolute;
@@ -606,205 +625,18 @@ textarea {
   height: 34px;
   border: 0;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.78);
+  background: rgba(255, 255, 255, 0.88);
   color: #4b2a00;
   font-size: 1.4rem;
   font-weight: 700;
   line-height: 1;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  z-index: 2;
 }
 
 .rules-modal-close:hover {
   transform: scale(1.06);
   background: #fff;
-}
-
-.rules-modal-title {
-  margin: 0 34px 12px 0;
-  font-size: 1.02rem;
-  line-height: 1.1;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: #8a2d00;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
-/* Shelf-style How to Play layout */
-
-.rules-modal-body.shelf-rules {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 2px;
-}
-
-.shelf-rule-row {
-  position: relative;
-  display: flex;
-  align-items: stretch;
-  gap: 6px;
-  padding: 4px 4px 8px;
-  border-radius: 12px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.15) 18%, rgba(249, 235, 210, 0.95) 18%, #f0dfc4 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.8),
-    0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.shelf-rule-row::after {
-  /* front shelf edge */
-  content: "";
-  position: absolute;
-  left: 4px;
-  right: 4px;
-  bottom: 2px;
-  height: 5px;
-  border-radius: 0 0 6px 6px;
-  background: linear-gradient(180deg, #b18c5e 0%, #8c6a3b 55%, #5f4525 100%);
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.28);
-  pointer-events: none;
-}
-
-.shelf-deco-products {
-  flex: 0 0 auto;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  gap: 4px;
-  padding: 2px 1px 0;
-}
-
-/* Decorative product silhouettes */
-
-.deco-product {
-  display: inline-block;
-  border-radius: 4px;
-  background: #ddd;
-  box-shadow:
-    0 2px 3px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
-}
-
-.deco-box {
-  width: 16px;
-  height: 18px;
-}
-
-.deco-can {
-  width: 12px;
-  height: 20px;
-  border-radius: 8px;
-}
-
-.deco-bottle {
-  width: 12px;
-  height: 24px;
-  border-radius: 6px 6px 3px 3px;
-  position: relative;
-}
-
-.deco-bottle::before {
-  content: "";
-  position: absolute;
-  left: 3px;
-  right: 3px;
-  top: -4px;
-  height: 6px;
-  border-radius: 3px 3px 1px 1px;
-  background: inherit;
-}
-
-/* Product color variants */
-
-.deco-red { background: #ff6b6b; }
-.deco-blue { background: #5c8dff; }
-.deco-green { background: #4caf50; }
-.deco-gold { background: #ffca28; }
-.deco-orange { background: #ff9800; }
-.deco-pink { background: #ff8ab8; }
-.deco-purple { background: #ab47bc; }
-.deco-teal { background: #26a69a; }
-.deco-yellow { background: #ffeb3b; }
-
-/* Price tags */
-
-.deco-price-tag {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: #ffec6a;
-  color: #4a3200;
-  font-size: 0.55rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  white-space: nowrap;
-}
-
-.deco-price-tag-win {
-  background: #7ee08f;
-  color: #123615;
-}
-
-/* Rule cards */
-
-.shelf-rule-card {
-  flex: 1 1 auto;
-  margin: 0;
-  padding: 6px 8px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 191, 71, 0.25);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  font-size: 0.78rem;
-  line-height: 1.24;
-  color: #2f2418;
-}
-
-.shelf-rule-card-strong {
-  font-weight: 800;
-}
-
-.shelf-rule-card-final {
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-/* Special rows */
-
-.shelf-rule-row-win {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.3) 18%, rgba(222, 244, 223, 0.98) 18%, #caefcf 100%);
-}
-
-.shelf-rule-row-final {
-  margin-bottom: 0;
-}
-
-/* Responsive tweaks for modal shelf */
-
-@media (min-width: 390px) {
-  .shelf-rule-row {
-    padding: 5px 6px 9px;
-  }
-
-  .deco-box { width: 18px; height: 20px; }
-  .deco-can { width: 14px; height: 22px; }
-  .deco-bottle { width: 14px; height: 26px; }
-
-  .shelf-rule-card {
-    font-size: 0.84rem;
-  }
 }
 
 /* Existing responsive breakpoints */
@@ -961,13 +793,7 @@ textarea {
   }
 
   .rules-modal-dialog {
-    width: min(78vw, 390px);
-    border-radius: 22px;
-    padding: 20px 18px 18px;
-  }
-
-  .rules-modal-title {
-    font-size: 1.16rem;
+    max-width: 480px;
   }
 }
 
