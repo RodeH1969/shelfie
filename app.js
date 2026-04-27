@@ -982,18 +982,18 @@ function clearTurnLocks() {
   state.selectedLockIds = new Set();
 }
 
+/**
+ * Build a single share row:
+ *   - rowResult: array of "🟩"/"🟥"/"⬜"
+ *   - lockSlotMap: Map(itemId -> slotIndex) for locks used this turn
+ * We ignore right/wrong for locks in the emoji row and just mark the slots with "🔒".
+ */
 function buildShareRow(rowResult, lockSlotMap, lockCorrectMap) {
-  const row = rowResult.join("");
+  const lockedSlots = new Set(lockSlotMap ? [...lockSlotMap.values()] : []);
 
-  if (!lockSlotMap || lockSlotMap.size === 0) {
-    return row;
-  }
-
-  const lockBits = Array.from(lockSlotMap.entries())
-    .sort((a, b) => a[1] - b[1])
-    .map(([id, slotIndex]) => `🔒${slotIndex + 1}${lockCorrectMap.get(id) ? "✅" : "❌"}`);
-
-  return `${row}  ${lockBits.join(" ")}`;
+  return rowResult
+    .map((cell, index) => (lockedSlots.has(index) ? "🔒" : cell))
+    .join("");
 }
 
 function isTouchLike() {
