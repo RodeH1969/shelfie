@@ -1,0 +1,45 @@
+DATE: 2026-04-29
+LABEL: Wednesday 29 April
+MAX_ATTEMPTS: 6
+
+ITEM
+NAME: Beef Jerky Original 50g 
+STORE: Aldi
+PRICE: 3.99
+IMAGE: ./assets/Beef Jerky Original 50g.png
+
+ITEM
+NAME: Cottage Cheese 500g 
+STORE: Aldi
+PRICE: 5.49
+IMAGE: ./assets/Cottage Cheese 500g.png
+
+ITEM
+NAME: Nivea Deo Aero Female Pearl And Beauty 250mL 
+STORE: Coles
+PRICE: 10.50
+IMAGE: ./assets/Nivea Deo Aero Female Pearl And Beauty 250mL.png
+
+ITEM
+NAME: Nescafe Gold Original Soluble Instant Coffee Jar 100g
+STORE: Woolworths
+PRICE: 14.50
+IMAGE: ./assets/Nescafe Gold Original Soluble Instant Coffee Jar 100g.png
+
+ITEM
+NAME: Durex Original Regular Fit Condoms 30 pack
+STORE: Woolworths
+PRICE: 17.50
+IMAGE: ./assets/Durex Original Regular Fit Condoms 30 pack.png
+
+ITEM
+NAME: Peters Maxibon Original Vanilla 4 Pack 560mL 
+STORE: Coles
+PRICE: 11.50
+IMAGE: ./assets/Peters Maxibon Original Vanilla 4 Pack 560mL.png
+
+ITEM
+NAME: Old El Paso Quesadilla Kit 365g 
+STORE: Coles
+PRICE: 8.50
+IMAGE: ./assets/Old El Paso Quesadilla Kit 365g.png
